@@ -7,7 +7,6 @@ A subscription visualization tool that displays subscription data in three inter
  - https://visualize.nguyenvu.dev/
  - https://vexly.app/demo
 
----
 
 ## Data Model
 

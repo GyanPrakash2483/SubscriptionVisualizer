@@ -108,10 +108,6 @@ This project uses ESLint with Next.js configuration. Code formatting follows Nex
 
 Contributions are welcome! Please read the specifications document to understand the project requirements before contributing.
 
-## License
-
-[Add your license here]
-
 ## References
 
 This project draws inspiration from:
