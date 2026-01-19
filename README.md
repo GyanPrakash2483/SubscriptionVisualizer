@@ -1,40 +1,44 @@
 # Subscription Visualizer
 
-A powerful web application for visualizing subscription data through interactive heatmaps, swarm plots, and bubble charts. Explore subscription patterns, identify trends, detect anomalies, and understand relationships across multiple dimensions.
+A powerful web application for visualizing subscription data through interactive **treemaps**, **swarm plots**, and **bubble charts**. Built with Next.js 16, React 19, and professional visualization library Nivo. Explore subscription patterns, identify trends, detect anomalies, and understand relationships across multiple dimensions.
 
-## Overview
+## ✨ Features
 
-Subscription Visualizer enables users to transform complex subscription data into intuitive visualizations that reveal insights about:
-- Subscription patterns over time
-- Revenue distribution across plans and regions
-- User behavior and engagement metrics
-- Churn analysis and risk assessment
-- Growth trends and forecasting
+### 📊 Professional Visualizations
 
-## Features
+- **🗂️ Hierarchical Treemap**: Space-filling layout showing subscriptions grouped by category, sized by revenue or count
+- **🎯 Swarm Distribution Plot**: Individual data points showing cost distribution across categories with force-based collision detection
+- **⚫ Circle Packing**: Nested bubble chart displaying hierarchical relationships between categories and subscriptions
 
-### Visualization Types
+### 🎨 Interactive Features
 
-- **Heatmap Grid**: Display subscription metrics aggregated across two dimensions using color intensity
-- **Swarm Plot**: Visualize individual subscription data points in a swarm layout to show distribution and clusters
-- **Bubble Chart**: Compare categories using bubble size and position to represent multiple dimensions
+- **Real-time filtering**: Filter by category, billing cycle, and status
+- **Metric toggle**: Switch between count and revenue views
+- **Rich tooltips**: Detailed information on hover with formatted data
+- **Smooth animations**: Professional transitions using Nivo's motion system
+- **Responsive design**: Optimized for desktop, tablet, and mobile
+- **Color-coded legends**: Visual guides for status and categories
 
-### Key Capabilities
+### 📤 Export & Sharing
 
-- Interactive filtering and drill-down capabilities
-- Multiple layout options (grid, radial, packed)
-- Real-time data updates
-- Responsive design for all screen sizes
-- Export visualizations in multiple formats (PNG, SVG, PDF, CSV)
-- Social media sharing with optimized previews
-- Customizable color palettes and themes
-- Accessibility features and keyboard navigation
+- **CSV Export**: Download filtered subscription data
+- **JSON Export**: Export data in JSON format
+- **Social Sharing**: Share to LinkedIn, Twitter, Facebook, Reddit
+- **Native Share API**: Use device's built-in sharing on mobile
+- **URL State Persistence**: Shareable links preserve filters and view state
 
-## Getting Started
+### 📈 Analytics Dashboard
+
+- **Monthly Spend**: Total monthly cost with annual plan prorating
+- **Annual Spend**: Total annualized subscription costs
+- **Active vs Cancelled**: Current subscription status breakdown
+- **Average Cost**: Per-subscription average monthly cost
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+ or Bun
 - pnpm (recommended) or npm/yarn
 
 ### Installation
@@ -57,63 +61,131 @@ pnpm dev
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Project Structure
+## 🏗️ Project Structure
 
 ```
 subscription_visualizer/
 ├── src/
-│   └── app/              # Next.js app directory
-│       ├── page.tsx      # Main page component
-│       ├── layout.tsx    # Root layout
-│       └── globals.css   # Global styles
-├── public/               # Static assets
-├── specifications.md     # Detailed project specifications
-└── package.json          # Dependencies and scripts
+│   ├── app/                    # Next.js app directory
+│   │   ├── page.tsx           # Main application page
+│   │   ├── layout.tsx         # Root layout with fonts
+│   │   └── globals.css        # Global styles with Tailwind v4
+│   └── components/            # Visualization components
+│       ├── TreemapView.tsx    # Nivo treemap visualization
+│       ├── SwarmView.tsx      # Nivo swarm plot visualization
+│       └── BubbleView.tsx     # Nivo circle packing visualization
+├── public/                     # Static assets
+├── specifications.md           # Detailed project specifications
+└── package.json               # Dependencies and scripts
 ```
 
-## Specifications
+## 🛠️ Technology Stack
 
-For detailed feature specifications, data models, visualization requirements, and implementation guidelines, please refer to the [**Specifications Document**](./specifications.md).
-
-The specifications document includes:
-- Complete data model definitions
-- Detailed visualization type specifications
-- Interaction and UI/UX requirements
-- Social media sharing features
-- Technical requirements
-- Implementation priorities
-
-## Technology Stack
-
-- **Framework**: [Next.js](https://nextjs.org) 16+
-- **UI Library**: React 19
-- **Styling**: Tailwind CSS 4
+- **Framework**: [Next.js 16](https://nextjs.org) with App Router
+- **UI Library**: React 19 with React Compiler
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com)
+- **Visualizations**: [Nivo](https://nivo.rocks) (D3-based)
 - **Language**: TypeScript 5
+- **Build Tool**: Turbopack (Next.js 16 default)
 - **Package Manager**: pnpm
 
-## Development
+## 📊 Visualization Details
+
+### Treemap
+- **Layout Algorithm**: Squarify algorithm for optimal space utilization
+- **Hierarchy**: Two levels (categories → subscriptions)
+- **Color Coding**: Status-based coloring (Active=green, Cancelled=red, Paused=amber, Trial=blue)
+- **Sizing**: Proportional to monthly cost or count
+- **Interactions**: Hover tooltips with detailed metrics
+
+### Swarm Plot
+- **Distribution**: Force-directed simulation for collision-free positioning
+- **X-axis**: Monthly cost (linear scale)
+- **Y-axis**: Categories (ordinal scale)
+- **Size Encoding**: Circle size represents usage hours
+- **Color Coding**: Status-based coloring
+- **Grid**: Dashed gridlines for cost reference
+
+### Circle Packing (Bubble Chart)
+- **Layout**: Hierarchical circle packing with nesting
+- **Hierarchy**: Two levels (categories → subscriptions)
+- **Color Scheme**: Category-based gradient colors
+- **Sizing**: Bubble area proportional to annual cost
+- **Background**: Dark gradient for visual contrast
+- **Interactions**: Rich tooltips showing aggregated metrics
+
+## 📝 Data Model
+
+Each subscription includes:
+- Service name and category
+- Status (Active, Cancelled, Paused, Trial)
+- Billing cycle (Monthly, Annual)
+- Cost information (monthly and annual)
+- Start and renewal dates
+- Optional usage metrics and notes
+
+## 🎯 Usage
+
+1. **Step 1 - Add Subscriptions**
+   - Manually enter subscription details
+   - Or load sample data to explore features
+   - View all entries in an organized table
+
+2. **Step 2 - Analyze Data**
+   - Switch between visualization types
+   - Apply filters to focus on specific data
+   - Toggle between count and revenue metrics
+   - Export or share insights
+
+## 🔧 Development
 
 ### Available Scripts
 
-- `pnpm dev` - Start development server
+- `pnpm dev` - Start development server (with Turbopack)
 - `pnpm build` - Build for production
 - `pnpm start` - Start production server
 - `pnpm lint` - Run ESLint
 
 ### Code Style
 
-This project uses ESLint with Next.js configuration. Code formatting follows Next.js and React best practices.
+- ESLint with Next.js 16 configuration
+- TypeScript strict mode enabled
+- Tailwind CSS v4 with native CSS layers
+- Component-based architecture with dynamic imports
 
-## Contributing
-
-Contributions are welcome! Please read the specifications document to understand the project requirements before contributing.
-
-## References
+## 📚 References & Inspiration
 
 This project draws inspiration from:
-- [visualize.nguyenvu.dev](https://visualize.nguyenvu.dev/)
-- [vexly.app/demo](https://vexly.app/demo)
+- [visualize.nguyenvu.dev](https://visualize.nguyenvu.dev/) - Data visualization patterns
+- [vexly.app/demo](https://vexly.app/demo) - Subscription management UX
+- [Nivo](https://nivo.rocks) - Professional visualization components
 
-## Support
+## 🎨 Design Philosophy
 
-For questions, issues, or feature requests, please open an issue in the repository.
+- **Professional & Beautiful**: Using Nivo's polished components for production-quality visualizations
+- **Responsive**: Mobile-first design that scales elegantly
+- **Accessible**: Proper ARIA labels and keyboard navigation
+- **Performance**: Dynamic imports and optimized rendering
+- **User-Centric**: Intuitive interactions with helpful tooltips
+
+## 📄 License
+
+This project is open source and available for educational and commercial use.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read the [specifications document](./specifications.md) to understand the project requirements before contributing.
+
+## 💡 Future Enhancements
+
+- Real-time data sync
+- Advanced analytics overlays
+- Custom color palette editor
+- Saved visualization presets
+- PDF report generation
+- Multi-user collaboration
+- API integration for external data sources
+
+---
+
+Built with ❤️ using Next.js 16, React 19, Tailwind CSS v4, and Nivo

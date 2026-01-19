@@ -1,7 +1,11 @@
 ## Specifications
 
 ### Overview
-A subscription visualization tool that displays subscription data in three interactive visualization modes: **Heatmap Grid**, **Swarm Plot**, and **Bubble Chart**. The tool enables users to explore subscription patterns, identify trends, detect anomalies, and understand relationships across multiple dimensions such as time, subscription type, region, revenue, and usage metrics.
+A consumer subscription manager that lets people enter their recurring services (e.g., Netflix, Amazon Prime, Disney+, Spotify, Hulu), then view analytics across three interactive modes: **Heatmap Grid**, **Swarm Plot**, and **Bubble Chart**. The goal is to track spend, renewal risk, and usage patterns over time.
+
+### User Flow
+- **Step 1: Enter subscriptions** — Users add their services (name, category, billing cycle, cost, start/renewal dates, status, optional usage/notes). Option to load sample providers.
+- **Step 2: Analyze & export** — Users view spend analytics (heatmap, swarm, bubbles), filter by category/status/billing cycle, and export/share (CSV/JSON/share URL/native share).
 
 ### References
  - https://visualize.nguyenvu.dev/
@@ -10,34 +14,28 @@ A subscription visualization tool that displays subscription data in three inter
 
 ## Data Model
 
-### Core Subscription Fields
+### Core Subscription Fields (consumer-focused)
 
 | Field | Type | Description | Example Values |
 |-------|------|-------------|----------------|
 | `subscription_id` | string/UUID | Unique identifier | "sub_123456" |
-| `customer_id` | string/UUID | Customer identifier | "cust_789012" |
-| `plan_type` | categorical | Subscription tier/plan | Basic, Premium, Enterprise, Pro |
-| `subscription_type` | categorical | Subscription category | Monthly, Annual, Lifetime, Trial |
-| `status` | categorical | Current status | Active, Cancelled, Paused, Expired, Trial |
-| `region` | categorical | Geographic location | North America, Europe, Asia, etc. |
-| `country` | categorical | Country code | US, UK, DE, JP |
-| `start_date` | date/time | Subscription start | ISO 8601 format |
-| `end_date` | date/time | Subscription end (if applicable) | ISO 8601 format |
-| `renewal_date` | date/time | Next renewal date | ISO 8601 format |
-| `monthly_revenue` | numeric | Monthly recurring revenue | 9.99, 29.99, 99.99 |
-| `total_revenue` | numeric | Lifetime value | 119.88, 359.88 |
-| `usage_metrics` | numeric | Usage statistics | API calls, storage GB, features used |
-| `churn_risk` | numeric | Churn probability score | 0.0 - 1.0 |
-| `user_segment` | categorical | Customer segment | Startup, SMB, Enterprise, Individual |
-| `tags` | array | Additional metadata tags | ["beta", "promo", "enterprise"] |
+| `service_name` | string | Provider name | Netflix, Amazon Prime, Disney+, Spotify |
+| `category` | categorical | Service category | Streaming, Music, Gaming, Shopping, News, Utilities |
+| `status` | categorical | Current status | Active, Cancelled, Paused, Trial |
+| `billing_cycle` | categorical | Recurrence period | Monthly, Annual |
+| `monthly_cost` | numeric | Monthly price (or annual / 12) | 15.49 |
+| `annual_cost` | numeric | Annual price (if billed annually) | 139.00 |
+| `start_date` | date | Subscription start | ISO 8601 |
+| `renewal_date` | date | Next renewal date | ISO 8601 |
+| `usage` | numeric | Optional usage metric (hours watched, streams, etc.) | 120 (hrs/month) |
+| `notes` | string | Optional notes | "Student discount", "Family plan" |
 
 ### Aggregated Metrics
-- Count of subscriptions
-- Sum of revenue
-- Average revenue per subscription
-- Churn rate
-- Growth rate
-- Retention rate
+- Total monthly spend (annualized for yearly plans)
+- Total annual spend
+- Active vs cancelled count
+- Average monthly cost per subscription
+- Category-level spend distribution
 
 ---
 
