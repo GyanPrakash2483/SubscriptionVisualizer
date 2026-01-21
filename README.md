@@ -45,7 +45,7 @@ A web app for entering subscription records and visualizing **subscription costs
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/GyanPrakash2483/SubscriptionVisualizer.git
 cd subscription_visualizer
 ```
 

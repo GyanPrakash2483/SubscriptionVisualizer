@@ -44,7 +44,6 @@ Each record is represented in the UI as:
 - Active count / cancelled count
 - Average monthly cost per subscription
 
----
 
 ## Visualizations (Current)
 
@@ -66,7 +65,6 @@ Each record is represented in the UI as:
 - **Color**: category colors for outer nodes, brand colors for subscription nodes
 - **Service mark**: icon in a white badge; if no icon exists, show the service’s first letter in a white badge
 
----
 
 ## Export & Sharing (Current)
 
