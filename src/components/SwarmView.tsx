@@ -111,18 +111,18 @@ export default function SwarmView({ data }: SwarmViewProps) {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-bold text-slate-900">Swarm Distribution Plot</h3>
-          <p className="text-sm text-slate-600">Each circle represents one subscription • Colored by service brand</p>
+          <h3 className="text-lg font-bold text-slate-100">Swarm Distribution Plot</h3>
+          <p className="text-sm text-slate-400">Each circle represents one subscription • Colored by service brand</p>
         </div>
         <div className="flex items-center gap-4 text-xs">
           <span className="text-slate-500">X = Monthly Cost</span>
-          <span className="text-slate-400">•</span>
+          <span className="text-slate-600">•</span>
           <span className="text-slate-500">Y = Category</span>
-          <span className="text-slate-400">•</span>
+          <span className="text-slate-600">•</span>
           <span className="text-slate-500">Size = Revenue</span>
         </div>
       </div>
-      <div className="h-[600px] overflow-hidden rounded-xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-6 shadow-sm">
+      <div className="glass h-[600px] overflow-hidden rounded-xl border border-slate-600/30 p-6 shadow-lg">
         <ResponsiveSwarmPlot
           data={swarmData}
           groups={Array.from(new Set(data.map((d) => d.category))).sort()}
@@ -213,27 +213,28 @@ export default function SwarmView({ data }: SwarmViewProps) {
             </div>
           )}
           theme={{
+            background: "transparent",
             axis: {
               domain: {
                 line: {
-                  stroke: "#cbd5e1",
+                  stroke: "#475569",
                   strokeWidth: 1,
                 },
               },
               ticks: {
                 line: {
-                  stroke: "#cbd5e1",
+                  stroke: "#475569",
                   strokeWidth: 1,
                 },
                 text: {
-                  fill: "#475569",
+                  fill: "#cbd5e1",
                   fontSize: 11,
                   fontWeight: 500,
                 },
               },
               legend: {
                 text: {
-                  fill: "#1e293b",
+                  fill: "#f1f5f9",
                   fontSize: 13,
                   fontWeight: 700,
                 },
@@ -241,7 +242,7 @@ export default function SwarmView({ data }: SwarmViewProps) {
             },
             grid: {
               line: {
-                stroke: "#e2e8f0",
+                stroke: "#334155",
                 strokeWidth: 1,
                 strokeDasharray: "4 4",
               },
@@ -257,12 +258,12 @@ export default function SwarmView({ data }: SwarmViewProps) {
           }}
         />
       </div>
-      <div className="flex flex-wrap items-center justify-center gap-4 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
-        <p className="text-xs font-bold uppercase tracking-wide text-slate-500 mr-2">Status Indicators:</p>
+      <div className="glass flex flex-wrap items-center justify-center gap-4 rounded-lg px-4 py-3">
+        <p className="text-xs font-bold uppercase tracking-wide text-slate-400 mr-2">Status Indicators:</p>
         {Object.entries(statusColors).map(([status, color]) => (
           <div key={status} className="flex items-center gap-2">
             <div className="h-3 w-3 rounded-full" style={{ backgroundColor: color }}></div>
-            <span className="text-xs font-semibold text-slate-700">{status}</span>
+            <span className="text-xs font-semibold text-slate-300">{status}</span>
           </div>
         ))}
       </div>

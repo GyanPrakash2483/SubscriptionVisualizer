@@ -3,8 +3,18 @@
 import { useEffect, useRef, useMemo } from "react";
 import * as d3 from "d3";
 import { Tv, Music, Gamepad2, ShoppingBag, Newspaper, Settings, LayoutGrid } from "lucide-react";
-import { SiHbo, SiLinkedin, SiPlaystation, SiAudible, SiNbc, SiNewyorktimes, SiApplemusic } from "react-icons/si";
+import { SiHbo, SiLinkedin, SiPlaystation, SiAudible, SiNbc, SiNewyorktimes, SiApplemusic, SiIcloud } from "react-icons/si";
 import { renderToString } from "react-dom/server";
+
+// Brand logo SVGs
+import NetflixLogo from "@/assets/brands/netflix.svg";
+import SpotifyLogo from "@/assets/brands/spotify.svg";
+import AmazonPrimeLogo from "@/assets/brands/amazonprime.svg";
+import DisneyPlusLogo from "@/assets/brands/disneyplus.svg";
+import YouTubeLogo from "@/assets/brands/youtube.svg";
+import AppleLogo from "@/assets/brands/apple.svg";
+import XboxLogo from "@/assets/brands/xbox.svg";
+import HuluLogo from "@/assets/brands/hulu.svg";
 
 type SubscriptionRecord = {
   id: string;
@@ -73,13 +83,23 @@ const statusColors: Record<string, string> = {
 };
 
 const serviceIconMap: Record<string, any> = {
+  // SVG Brand Logos
+  "Netflix": NetflixLogo,
+  "Spotify": SpotifyLogo,
+  "Amazon Prime": AmazonPrimeLogo,
+  "Disney+": DisneyPlusLogo,
+  "YouTube Premium": YouTubeLogo,
+  "Apple iCloud": AppleLogo,
+  "Apple Music": AppleLogo,
+  "Xbox Game Pass": XboxLogo,
+  "Hulu": HuluLogo,
+  // React Icons (Simple Icons)
   "HBO Max": SiHbo,
   "LinkedIn Premium": SiLinkedin,
   "PlayStation Plus": SiPlaystation,
   "Peacock": SiNbc,
   "NYTimes": SiNewyorktimes,
   "Audible": SiAudible,
-  "Apple Music": SiApplemusic,
 };
 
 function getServiceInitial(serviceName: string): string {
@@ -91,7 +111,22 @@ function getServiceInitial(serviceName: string): string {
 function getIconForService(serviceName: string, size: number, color: string): string {
   const Icon = serviceIconMap[serviceName];
   if (Icon) {
-    return renderToString(<Icon size={size} color={color} />);
+    // Check if it's a React component from react-icons (has size prop)
+    if (typeof Icon === 'function' && Icon.name?.startsWith('Si')) {
+      return renderToString(<Icon size={size} color={color} style={{ display: 'block', flexShrink: 0 }} />);
+    }
+    // Otherwise it's an SVG component from SVGR
+    return renderToString(
+      <Icon 
+        width={size}
+        height={size}
+        style={{ 
+          display: 'block',
+          fill: color,
+          color
+        }} 
+      />
+    );
   }
   return "";
 }
@@ -218,16 +253,16 @@ export default function TreemapView({ data }: TreemapViewProps) {
       const height = d.y1 - d.y0;
       
       if (width > 80 && height > 80) {
-        const badgeSize = 28;
-        const glyphSize = 16;
-        const iconColor = serviceColors[d.data.name] || "#0f172a";
-        const iconSvg = getIconForService(d.data.name, glyphSize, iconColor);
+        const badgeSize = 36;
+        const iconSize = 20;
+        const iconColor = serviceColors[d.data.name] || "#3b82f6";
+        const iconSvg = getIconForService(d.data.name, iconSize, iconColor);
         const content = iconSvg
           ? iconSvg
           : `<span style="
-              font-size: 14px;
+              font-size: 16px;
               font-weight: 800;
-              color: ${iconColor};
+              color: #ffffff;
               line-height: 1;
               font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji';
             ">${getServiceInitial(d.data.name)}</span>`;
@@ -246,13 +281,15 @@ export default function TreemapView({ data }: TreemapViewProps) {
               display: flex;
               align-items: center;
               justify-content: center;
-              background: #ffffff;
+              background: rgba(15, 23, 42, 0.85);
               border-radius: 9999px;
-              border: 1px solid rgba(15, 23, 42, 0.14);
-              box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+              border: 1px solid rgba(148, 163, 184, 0.2);
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
               opacity: 0.98;
               pointer-events: none;
               user-select: none;
+              padding: 6px;
+              overflow: hidden;
             ">${content}</div>`
           );
       }
@@ -359,35 +396,7 @@ export default function TreemapView({ data }: TreemapViewProps) {
         return `${d.data.percentage.toFixed(1)}% of total`;
       });
 
-    // Add status badge
-    cells
-      .append("rect")
-      .attr("x", (d: any) => (d.x1 - d.x0) - 60)
-      .attr("y", 8)
-      .attr("width", 52)
-      .attr("height", 20)
-      .attr("rx", 10)
-      .attr("fill", (d: any) => statusColors[d.data.status] || "#64748b")
-      .style("opacity", 0.9)
-      .style("display", (d: any) => {
-        const width = d.x1 - d.x0;
-        return width > 140 ? "block" : "none";
-      });
 
-    cells
-      .append("text")
-      .attr("x", (d: any) => (d.x1 - d.x0) - 34)
-      .attr("y", 21)
-      .attr("text-anchor", "middle")
-      .style("font-size", "10px")
-      .style("font-weight", "600")
-      .style("fill", "#ffffff")
-      .style("pointer-events", "none")
-      .style("display", (d: any) => {
-        const width = d.x1 - d.x0;
-        return width > 140 ? "block" : "none";
-      })
-      .text((d: any) => d.data.status);
 
     // Create tooltip
     const tooltip = d3
@@ -418,10 +427,6 @@ export default function TreemapView({ data }: TreemapViewProps) {
               ${d.data.name}
             </div>
             <div style="display: grid; gap: 4px; font-size: 12px;">
-              <div style="display: flex; justify-content: space-between; gap: 24px;">
-                <span style="color: #94a3b8;">Status:</span>
-                <span style="font-weight: 600; color: ${statusColors[d.data.status]};">${d.data.status}</span>
-              </div>
               <div style="display: flex; justify-content: space-between; gap: 24px;">
                 <span style="color: #94a3b8;">Category:</span>
                 <span style="font-weight: 600;">${d.data.category}</span>
@@ -468,25 +473,14 @@ export default function TreemapView({ data }: TreemapViewProps) {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-bold text-slate-900">Subscription Treemap</h3>
-          <p className="text-sm text-slate-600">
+          <h3 className="text-lg font-bold text-slate-100">Subscription Treemap</h3>
+          <p className="text-sm text-slate-400">
             {data.length} subscription{data.length !== 1 ? 's' : ''} • Total: {currency.format(totalValue)}/month
           </p>
         </div>
       </div>
-      <div ref={containerRef} className="h-[600px] overflow-hidden rounded-xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-2 shadow-sm">
+      <div ref={containerRef} className="glass h-[600px] overflow-hidden rounded-xl border border-slate-600/30 p-2 shadow-lg">
         <svg ref={svgRef} className="w-full h-full" />
-      </div>
-      <div className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
-        <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Status Colors</p>
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          {Object.entries(statusColors).map(([status, color]) => (
-            <div key={status} className="flex items-center gap-2">
-              <div className="h-3 w-3 rounded-full" style={{ backgroundColor: color }}></div>
-              <span className="text-xs font-semibold text-slate-700">{status}</span>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );

@@ -2,8 +2,18 @@
 
 import { ResponsiveCirclePacking } from "@nivo/circle-packing";
 import { useMemo } from "react";
-import { SiHbo, SiLinkedin, SiPlaystation, SiAudible, SiNbc, SiNewyorktimes, SiApplemusic } from "react-icons/si";
+import { SiHbo, SiLinkedin, SiPlaystation, SiAudible, SiNbc, SiNewyorktimes, SiApplemusic, SiIcloud } from "react-icons/si";
 import { renderToString } from "react-dom/server";
+
+// Brand logo SVGs
+import NetflixLogo from "@/assets/brands/netflix.svg";
+import SpotifyLogo from "@/assets/brands/spotify.svg";
+import AmazonPrimeLogo from "@/assets/brands/amazonprime.svg";
+import DisneyPlusLogo from "@/assets/brands/disneyplus.svg";
+import YouTubeLogo from "@/assets/brands/youtube.svg";
+import AppleLogo from "@/assets/brands/apple.svg";
+import XboxLogo from "@/assets/brands/xbox.svg";
+import HuluLogo from "@/assets/brands/hulu.svg";
 
 type SubscriptionRecord = {
   id: string;
@@ -83,13 +93,23 @@ const statusColors: Record<string, string> = {
 };
 
 const serviceIconMap: Record<string, any> = {
+  // SVG Brand Logos
+  "Netflix": NetflixLogo,
+  "Spotify": SpotifyLogo,
+  "Amazon Prime": AmazonPrimeLogo,
+  "Disney+": DisneyPlusLogo,
+  "YouTube Premium": YouTubeLogo,
+  "Apple iCloud": AppleLogo,
+  "Apple Music": AppleLogo,
+  "Xbox Game Pass": XboxLogo,
+  "Hulu": HuluLogo,
+  // React Icons (Simple Icons)
   "HBO Max": SiHbo,
   "LinkedIn Premium": SiLinkedin,
   "PlayStation Plus": SiPlaystation,
   "Peacock": SiNbc,
   "NYTimes": SiNewyorktimes,
   "Audible": SiAudible,
-  "Apple Music": SiApplemusic,
 };
 
 function getServiceInitial(serviceName: string): string {
@@ -101,7 +121,22 @@ function getServiceInitial(serviceName: string): string {
 function getIconForService(serviceName: string, size: number, color: string): string {
   const Icon = serviceIconMap[serviceName];
   if (Icon) {
-    return renderToString(<Icon size={size} color={color} />);
+    // Check if it's a React component from react-icons (has size prop)
+    if (typeof Icon === 'function' && Icon.name?.startsWith('Si')) {
+      return renderToString(<Icon size={size} color={color} style={{ display: 'block', flexShrink: 0 }} />);
+    }
+    // Otherwise it's an SVG component from SVGR
+    return renderToString(
+      <Icon 
+        width={size}
+        height={size}
+        style={{ 
+          display: 'block',
+          fill: color,
+          color
+        }} 
+      />
+    );
   }
   return "";
 }
@@ -173,14 +208,14 @@ export default function BubbleView({ data }: BubbleViewProps) {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-bold text-slate-900">Hierarchical Circle Packing</h3>
-          <p className="text-sm text-slate-600">Categories in outer bubbles • Services in inner bubbles • Sized by annual cost</p>
+          <h3 className="text-lg font-bold text-slate-100">Hierarchical Circle Packing</h3>
+          <p className="text-sm text-slate-400">Categories in outer bubbles • Services in inner bubbles • Sized by annual cost</p>
         </div>
         <div className="flex items-center gap-2 text-xs">
           <span className="text-slate-500">Size = Annual Cost</span>
         </div>
       </div>
-      <div className="h-[600px] overflow-hidden rounded-xl border border-slate-200 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4 shadow-sm">
+      <div className="glass h-[600px] overflow-hidden rounded-xl border border-slate-600/30 bg-gradient-to-br from-slate-900/50 via-slate-800/50 to-slate-900/50 p-4 shadow-lg">
         <ResponsiveCirclePacking
           data={bubbleData}
           margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
@@ -232,10 +267,10 @@ export default function BubbleView({ data }: BubbleViewProps) {
                   // Only show icons for bubbles with radius > 20
                   if (radius < 20) return null;
                   
-                  const badgeSize = Math.min(28, radius * 0.7);
-                  const glyphSize = Math.max(14, Math.floor(badgeSize * 0.62));
-                  const iconColor = node.data?.color || "#0f172a";
-                  const iconSvg = getIconForService(node.id, glyphSize, iconColor);
+                  const badgeSize = Math.min(36, Math.max(28, radius * 0.6));
+                  const iconSize = Math.floor(badgeSize * 0.6);
+                  const iconColor = node.data?.color || "#3b82f6";
+                  const iconSvg = getIconForService(node.id, iconSize, iconColor);
                   const initial = getServiceInitial(node.id);
                   
                   return (
@@ -255,24 +290,32 @@ export default function BubbleView({ data }: BubbleViewProps) {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            backgroundColor: '#ffffff',
+                            backgroundColor: 'rgba(15, 23, 42, 0.85)',
                             borderRadius: '9999px',
-                            border: '1px solid rgba(15, 23, 42, 0.14)',
-                            boxShadow: '0 6px 16px rgba(0, 0, 0, 0.22)',
+                            border: '1px solid rgba(148, 163, 184, 0.2)',
+                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.35)',
                             userSelect: 'none',
+                            padding: `${Math.max(6, badgeSize * 0.15)}px`,
+                            overflow: 'hidden',
                           }}
                         >
                           {iconSvg ? (
                             <div
-                              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                              style={{ 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'center',
+                                width: '100%',
+                                height: '100%'
+                              }}
                               dangerouslySetInnerHTML={{ __html: iconSvg }}
                             />
                           ) : (
                             <span
                               style={{
-                                fontSize: `${Math.max(13, Math.floor(badgeSize * 0.52))}px`,
+                                fontSize: `${Math.max(12, Math.floor(badgeSize * 0.5))}px`,
                                 fontWeight: 800,
-                                color: iconColor,
+                                color: '#ffffff',
                                 lineHeight: 1,
                               }}
                             >
@@ -385,24 +428,24 @@ export default function BubbleView({ data }: BubbleViewProps) {
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
-        <div className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
-          <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Category Colors (Outer Bubbles)</p>
+        <div className="glass rounded-lg px-4 py-3">
+          <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-400">Category Colors (Outer Bubbles)</p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             {Object.entries(categoryColors).map(([category, color]) => (
               <div key={category} className="flex items-center gap-2">
                 <div className="h-3 w-3 rounded-full" style={{ backgroundColor: color }}></div>
-                <span className="text-xs font-semibold text-slate-700">{category}</span>
+                <span className="text-xs font-semibold text-slate-300">{category}</span>
               </div>
             ))}
           </div>
         </div>
-        <div className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
-          <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Status Indicators</p>
+        <div className="glass rounded-lg px-4 py-3">
+          <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-400">Status Indicators</p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             {Object.entries(statusColors).map(([status, color]) => (
               <div key={status} className="flex items-center gap-2">
                 <div className="h-3 w-3 rounded-full" style={{ backgroundColor: color }}></div>
-                <span className="text-xs font-semibold text-slate-700">{status}</span>
+                <span className="text-xs font-semibold text-slate-300">{status}</span>
               </div>
             ))}
           </div>

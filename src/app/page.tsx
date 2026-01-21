@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
+import { Github } from "lucide-react";
 
 type SubscriptionRecord = {
   id: string;
@@ -362,53 +363,58 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 px-4 py-8 text-slate-900 md:px-6 md:py-10">
-      <div className="mx-auto flex max-w-7xl flex-col gap-6">
-        <header className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-sky-700">Subscription Visualizer</p>
-            <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">
-              {reportAuthor ? `Report by ${reportAuthor}` : "Manage & visualize subscriptions"}
-            </h1>
-            <p className="text-sm text-slate-600">
-              {reportAuthor ? `Shared subscription report • ${entries.length} subscription${entries.length !== 1 ? 's' : ''}` : `Step ${step} of 2 • ${entries.length} subscription${entries.length !== 1 ? 's' : ''}`}
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={() => {
-                if (step === 1 && entries.length === 0) return;
-                setStep((prev) => (prev === 1 ? 2 : 1));
-              }}
-              className="rounded-full bg-sky-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-500/20 disabled:cursor-not-allowed disabled:opacity-50"
-              disabled={step === 1 && entries.length === 0}
-            >
-              {step === 1 ? "View Analytics" : "Back to Input"}
-            </button>
-            <button
-              type="button"
-              onClick={() => setShareOpen(true)}
-              className="rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-500/10 disabled:cursor-not-allowed disabled:opacity-50"
-              disabled={entries.length === 0}
-            >
-              Share / Export
-            </button>
+    <main className="relative min-h-screen px-4 py-8 text-slate-100 md:px-6 md:py-10">
+      <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-6">
+        <header className="glass-strong rounded-2xl p-6 shadow-xl">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <div className="mb-2 flex items-center gap-3">
+                <div className="h-10 w-1 rounded-full bg-gradient-to-b from-blue-500 via-purple-500 to-pink-500"></div>
+                <p className="text-xs font-bold uppercase tracking-wider text-blue-400">Subscription Visualizer</p>
+              </div>
+              <h1 className="bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-2xl font-bold text-transparent md:text-3xl">
+                {reportAuthor ? `Report by ${reportAuthor}` : "Manage & visualize subscriptions"}
+              </h1>
+              <p className="mt-1 text-sm text-slate-400">
+                {reportAuthor ? `Shared subscription report • ${entries.length} subscription${entries.length !== 1 ? 's' : ''}` : `Step ${step} of 2 • ${entries.length} subscription${entries.length !== 1 ? 's' : ''}`}
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  if (step === 1 && entries.length === 0) return;
+                  setStep((prev) => (prev === 1 ? 2 : 1));
+                }}
+                className="btn-primary glow-hover rounded-xl px-6 py-3 text-sm font-bold text-white transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={step === 1 && entries.length === 0}
+              >
+                {step === 1 ? "View Analytics →" : "← Back to Input"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setShareOpen(true)}
+                className="rounded-xl border border-slate-600/50 bg-slate-700/40 px-6 py-3 text-sm font-bold text-slate-100 shadow-lg backdrop-blur-sm transition hover:border-slate-500/70 hover:bg-slate-600/50 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-500/30 disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={entries.length === 0}
+              >
+                Share / Export
+              </button>
+            </div>
           </div>
         </header>
 
         {step === 1 && (
-          <section className="grid gap-4 rounded-2xl border border-slate-200/60 bg-white/70 p-5 shadow-sm backdrop-blur">
+          <section className="glass-strong grid gap-4 rounded-2xl p-6 shadow-xl">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <h2 className="text-xl font-semibold text-slate-900">Enter your subscriptions</h2>
-                <p className="text-sm text-slate-600">Add your records or load sample data to preview analytics.</p>
+                <h2 className="text-xl font-semibold text-slate-100">Enter your subscriptions</h2>
+                <p className="text-sm text-slate-400">Add your records or load sample data to preview analytics.</p>
               </div>
               <div className="flex flex-wrap gap-2">
                 <button
                   type="button"
                   onClick={() => setEntries(sampleData)}
-                  className="rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-500/10"
+                  className="glass rounded-xl px-4 py-2 text-sm font-semibold text-slate-200 shadow-lg transition hover:bg-slate-700/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-500/20"
                 >
                   Load sample data
                 </button>
@@ -416,7 +422,7 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() => setEntries([])}
-                    className="rounded-full border border-red-200 bg-white/70 px-4 py-2 text-sm font-semibold text-red-600 shadow-sm transition hover:border-red-300 hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-red-500/10"
+                    className="glass rounded-xl px-4 py-2 text-sm font-semibold text-red-400 shadow-lg transition hover:bg-red-900/30 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-red-500/20"
                   >
                     Clear all
                   </button>
@@ -437,42 +443,38 @@ export default function Home() {
               <button
                 type="button"
                 onClick={handleAdd}
-                className="rounded-full bg-sky-600 px-6 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-500/20"
+                className="btn-primary glow-hover rounded-xl px-8 py-3 text-sm font-bold text-white transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40"
               >
-                + Add subscription
+                Add Subscription
               </button>
             </div>
 
             {entries.length > 0 && (
-              <div className="overflow-auto rounded-lg border border-slate-200">
-                <table className="min-w-full divide-y divide-slate-200 text-sm">
-                  <thead className="bg-slate-50">
-                    <tr className="text-left text-xs font-semibold uppercase tracking-wide text-slate-600">
+              <div className="glass overflow-auto rounded-xl">
+                <table className="min-w-full divide-y divide-slate-700/50 text-sm">
+                  <thead className="bg-slate-800/30">
+                      <tr className="text-left text-xs font-semibold uppercase tracking-wide text-slate-400">
                       <th className="px-4 py-3">Service</th>
                       <th className="px-4 py-3">Category</th>
-                      <th className="px-4 py-3">Status</th>
                       <th className="px-4 py-3">Billing</th>
                       <th className="px-4 py-3 text-right">Monthly</th>
                       <th className="px-4 py-3 text-right">Annual</th>
                       <th className="px-4 py-3"></th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 bg-white">
+                  <tbody className="divide-y divide-slate-700/30">
                     {entries.map((row) => (
-                      <tr key={row.id} className="hover:bg-slate-50 transition">
-                        <td className="px-4 py-3 font-medium text-slate-900">{row.serviceName}</td>
-                        <td className="px-4 py-3 text-slate-600">{row.category}</td>
-                        <td className="px-4 py-3">
-                          <StatusBadge status={row.status} />
-                        </td>
-                        <td className="px-4 py-3 text-slate-600">{row.billingCycle}</td>
-                        <td className="px-4 py-3 text-right font-medium text-slate-900">{currency.format(monthlyValue(row))}</td>
-                        <td className="px-4 py-3 text-right text-slate-600">{currency.format(annualValue(row))}</td>
+                      <tr key={row.id} className="transition hover:bg-slate-700/20">
+                        <td className="px-4 py-3 font-medium text-slate-100">{row.serviceName}</td>
+                        <td className="px-4 py-3 text-slate-300">{row.category}</td>
+                        <td className="px-4 py-3 text-slate-300">{row.billingCycle}</td>
+                        <td className="px-4 py-3 text-right font-medium text-slate-100">{currency.format(monthlyValue(row))}</td>
+                        <td className="px-4 py-3 text-right text-slate-300">{currency.format(annualValue(row))}</td>
                         <td className="px-4 py-3 text-right">
                           <button
                             type="button"
                             onClick={() => handleDelete(row.id)}
-                            className="text-xs font-semibold text-red-600 hover:text-red-700 hover:underline"
+                            className="text-xs font-semibold text-red-400 hover:text-red-300 hover:underline"
                           >
                             Remove
                           </button>
@@ -485,8 +487,8 @@ export default function Home() {
             )}
 
             {entries.length === 0 && (
-              <div className="rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 p-8 text-center">
-                <p className="text-sm font-medium text-slate-600">No subscriptions yet</p>
+              <div className="glass rounded-xl border-2 border-dashed border-slate-600/30 p-8 text-center">
+                <p className="text-sm font-medium text-slate-300">No subscriptions yet</p>
                 <p className="mt-1 text-xs text-slate-500">Add your first subscription or load sample data to get started</p>
               </div>
             )}
@@ -496,26 +498,26 @@ export default function Home() {
         {step === 2 && (
           <>
             {loadingReport ? (
-              <div className="rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-12 text-center">
-                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-slate-300 border-t-sky-600"></div>
-                <p className="mt-4 text-lg font-medium text-slate-700">Loading report...</p>
-                <p className="mt-2 text-sm text-slate-600">Please wait while we fetch your subscription data</p>
+              <div className="glass-strong rounded-2xl border-2 border-dashed border-slate-600/30 p-12 text-center">
+                <div className="glow inline-block h-8 w-8 animate-spin rounded-full border-4 border-slate-600 border-t-blue-500"></div>
+                <p className="mt-4 text-lg font-medium text-slate-200">Loading report...</p>
+                <p className="mt-2 text-sm text-slate-400">Please wait while we fetch your subscription data</p>
               </div>
             ) : entries.length === 0 ? (
-              <div className="rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-12 text-center">
-                <p className="text-lg font-medium text-slate-700">No data to visualize</p>
-                <p className="mt-2 text-sm text-slate-600">Go back and add subscriptions first</p>
+              <div className="glass-strong rounded-2xl border-2 border-dashed border-slate-600/30 p-12 text-center">
+                <p className="text-lg font-medium text-slate-200">No data to visualize</p>
+                <p className="mt-2 text-sm text-slate-400">Go back and add subscriptions first</p>
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="mt-4 rounded-full bg-sky-600 px-6 py-2 text-sm font-semibold text-white hover:bg-sky-700"
+                  className="glow-hover mt-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-2.5 text-sm font-semibold text-white hover:from-blue-500 hover:to-purple-500"
                 >
                   Back to Input
                 </button>
               </div>
             ) : (
               <>
-                <section className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:grid-cols-2 lg:grid-cols-4">
+                <section className="glass-strong grid gap-4 rounded-2xl p-6 shadow-xl md:grid-cols-2 lg:grid-cols-4">
                   <SummaryCard title="Monthly Spend" value={currency.format(summary.totalMonthly)} hint="Total monthly cost (annual plans prorated)" color="sky" />
                   <SummaryCard title="Annual Spend" value={currency.format(summary.totalAnnual)} hint="Total annualized cost" color="violet" />
                   <SummaryCard title="Active / Cancelled" value={`${summary.active} / ${summary.cancelled}`} hint="Current subscription status" color="emerald" />
@@ -532,7 +534,7 @@ export default function Home() {
                   recordCount={filtered.length}
                 />
 
-                <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <section className="glass-strong rounded-2xl p-6 shadow-xl">
                   <div className="flex flex-wrap items-center justify-between gap-3 pb-5">
                     <div className="flex flex-wrap items-center gap-2">
                       {(["treemap", "swarm", "bubble"] as ViewMode[]).map((mode) => (
@@ -540,10 +542,10 @@ export default function Home() {
                           key={mode}
                           type="button"
                           onClick={() => setView(mode)}
-                          className={`rounded-lg border px-4 py-2 text-sm font-semibold transition ${
+                          className={`rounded-xl px-5 py-2.5 text-sm font-bold transition ${
                             view === mode 
-                              ? "border-sky-500 bg-sky-50 text-sky-700 shadow-sm" 
-                              : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+                              ? "btn-primary glow text-white shadow-xl" 
+                              : "border border-slate-600/50 bg-slate-700/30 text-slate-300 hover:border-slate-500/70 hover:bg-slate-600/40"
                           }`}
                         >
                           {mode === "treemap" && "Treemap"}
@@ -554,7 +556,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="rounded-xl bg-gradient-to-br from-slate-50 to-white p-4">
+                  <div className="glass rounded-2xl p-4">
                     {view === "treemap" && <TreemapView data={filtered} />}
                     {view === "swarm" && <SwarmView data={filtered} />}
                     {view === "bubble" && <BubbleView data={filtered} />}
@@ -565,8 +567,30 @@ export default function Home() {
           </>
         )}
 
-        <footer className="border-t border-slate-200 pt-6 text-center text-xs text-slate-500">
-          <p>Built with Next.js 16, React 19, and Tailwind CSS v4 • Subscription Visualizer © 2026</p>
+        <footer className="glass-strong mt-8 rounded-2xl border-t border-slate-700/50 p-6 text-center text-xs text-slate-400">
+          <p>Built with Next.js 16, React 19, and Tailwind CSS v4</p>
+          <p className="mt-1">
+            Made with{' '}
+            <a
+              href="https://kombai.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text font-semibold text-transparent transition hover:from-blue-300 hover:to-purple-300"
+            >
+              Kombai
+            </a>
+          </p>
+          <a
+            href="https://github.com/GyanPrakash2483/SubscriptionVisualizer"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 inline-flex items-center gap-1.5 text-slate-500 transition hover:text-slate-300"
+            aria-label="View source on GitHub"
+          >
+            <Github size={14} />
+            <span>View Source</span>
+          </a>
+          <p className="mt-2 text-slate-600">© 2026 gyanprakash2483@gmail.com</p>
         </footer>
       </div>
 
@@ -595,35 +619,29 @@ export default function Home() {
 type SummaryCardProps = { title: string; value: string; hint: string; color: "sky" | "violet" | "emerald" | "amber" };
 function SummaryCard({ title, value, hint, color }: SummaryCardProps) {
   const colorClasses = {
-    sky: "from-sky-50 to-sky-100 border-sky-200",
-    violet: "from-violet-50 to-violet-100 border-violet-200",
-    emerald: "from-emerald-50 to-emerald-100 border-emerald-200",
-    amber: "from-amber-50 to-amber-100 border-amber-200",
+    sky: "from-blue-500/20 to-cyan-500/20 border-blue-400/20",
+    violet: "from-violet-500/20 to-purple-500/20 border-violet-400/20",
+    emerald: "from-emerald-500/20 to-green-500/20 border-emerald-400/20",
+    amber: "from-amber-500/20 to-orange-500/20 border-amber-400/20",
+  };
+
+  const textColors = {
+    sky: "text-blue-400",
+    violet: "text-violet-400",
+    emerald: "text-emerald-400",
+    amber: "text-amber-400",
   };
 
   return (
-    <div className={`rounded-xl border bg-gradient-to-br p-4 shadow-sm ${colorClasses[color]}`}>
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-600">{title}</p>
-      <p className="mt-2 text-2xl font-bold text-slate-900">{value}</p>
-      <p className="mt-1 text-xs text-slate-600">{hint}</p>
+    <div className={`glass rounded-xl border bg-gradient-to-br p-4 shadow-lg ${colorClasses[color]}`}>
+      <p className={`text-xs font-semibold uppercase tracking-wide ${textColors[color]}`}>{title}</p>
+      <p className="mt-2 text-2xl font-bold text-slate-100">{value}</p>
+      <p className="mt-1 text-xs text-slate-400">{hint}</p>
     </div>
   );
 }
 
-function StatusBadge({ status }: { status: SubscriptionRecord["status"] }) {
-  const styles = {
-    Active: "bg-emerald-100 text-emerald-700 border-emerald-300",
-    Cancelled: "bg-red-100 text-red-700 border-red-300",
-    Paused: "bg-amber-100 text-amber-700 border-amber-300",
-    Trial: "bg-sky-100 text-sky-700 border-sky-300",
-  };
 
-  return (
-    <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-semibold ${styles[status]}`}>
-      {status}
-    </span>
-  );
-}
 
 type FiltersBarProps = {
   categoryFilter: string;
@@ -637,12 +655,12 @@ type FiltersBarProps = {
 
 function FiltersBar({ categoryFilter, cycleFilter, statusFilter, onCategoryChange, onCycleChange, onStatusChange, recordCount }: FiltersBarProps) {
   return (
-    <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-slate-200/60 bg-white/70 p-4 shadow-sm backdrop-blur">
+    <div className="glass-strong flex flex-wrap items-center gap-3 rounded-2xl p-4 shadow-xl">
       <Selector label="Category" value={categoryFilter} onChange={onCategoryChange} options={["All categories", ...categories]} />
       <Selector label="Billing" value={cycleFilter} onChange={onCycleChange} options={["All billing", ...billingCycles]} />
       <Selector label="Status" value={statusFilter} onChange={onStatusChange} options={["All statuses", ...statuses]} />
       <div className="ml-auto flex items-center gap-3">
-        <span className="text-xs text-slate-500">{recordCount} record{recordCount !== 1 ? 's' : ''}</span>
+        <span className="text-xs text-slate-400">{recordCount} record{recordCount !== 1 ? 's' : ''}</span>
       </div>
     </div>
   );
@@ -651,12 +669,12 @@ function FiltersBar({ categoryFilter, cycleFilter, statusFilter, onCategoryChang
 type SelectorProps = { label: string; value: string; options: string[]; onChange: (v: string) => void };
 function Selector({ label, value, options, onChange }: SelectorProps) {
   return (
-    <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
-      <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">{label}</span>
+    <label className="flex items-center gap-2 text-sm font-medium text-slate-200">
+      <span className="text-xs font-bold uppercase tracking-wide text-slate-300">{label}</span>
       <select 
         value={value} 
         onChange={(e) => onChange(e.target.value)} 
-        className="rounded-xl border border-slate-200/80 bg-white/80 px-3 py-2 text-sm text-slate-800 shadow-sm transition focus:border-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-500/10"
+        className="input-enhanced rounded-xl px-4 py-2.5 text-sm font-medium text-slate-100 shadow-sm"
       >
         {options.map((opt) => (
           <option key={opt} value={opt}>
@@ -671,15 +689,15 @@ function Selector({ label, value, options, onChange }: SelectorProps) {
 type TextFieldProps = { label: string; value: string; onChange: (v: string) => void; type?: string; step?: string; placeholder?: string };
 function TextField({ label, value, onChange, type = "text", step, placeholder }: TextFieldProps) {
   return (
-    <label className="flex flex-col gap-1.5 text-sm font-medium text-slate-700">
-      <span className="text-xs font-semibold uppercase tracking-wide text-slate-600">{label}</span>
+    <label className="flex flex-col gap-1.5 text-sm font-medium text-slate-200">
+      <span className="text-xs font-bold uppercase tracking-wide text-slate-300">{label}</span>
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
         type={type}
         step={step}
         placeholder={placeholder}
-        className="rounded-xl border border-slate-200/80 bg-white/80 px-3 py-2 text-sm text-slate-800 shadow-sm transition placeholder:text-slate-400 focus:border-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-500/10"
+        className="input-enhanced rounded-xl px-4 py-2.5 text-sm font-medium text-slate-100 placeholder:text-slate-500"
       />
     </label>
   );
@@ -688,12 +706,12 @@ function TextField({ label, value, onChange, type = "text", step, placeholder }:
 type SelectFieldProps = { label: string; value: string; options: string[]; onChange: (v: string) => void };
 function SelectField({ label, value, options, onChange }: SelectFieldProps) {
   return (
-    <label className="flex flex-col gap-1.5 text-sm font-medium text-slate-700">
-      <span className="text-xs font-semibold uppercase tracking-wide text-slate-600">{label}</span>
+    <label className="flex flex-col gap-1.5 text-sm font-medium text-slate-200">
+      <span className="text-xs font-bold uppercase tracking-wide text-slate-300">{label}</span>
       <select 
         value={value} 
         onChange={(e) => onChange(e.target.value)} 
-        className="rounded-xl border border-slate-200/80 bg-white/80 px-3 py-2 text-sm text-slate-800 shadow-sm transition focus:border-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-500/10"
+        className="input-enhanced rounded-xl px-4 py-2.5 text-sm font-medium text-slate-100 shadow-sm"
       >
         {options.map((opt) => (
           <option key={opt} value={opt}>
@@ -746,19 +764,19 @@ function ShareExportModal({ onClose, view, categoryFilter, cycleFilter, statusFi
   const displayUrl = savedReportId ? shareableUrl : shareUrl;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" onClick={onClose}>
-      <div className="w-full max-w-2xl rounded-3xl border border-slate-200/70 bg-white/90 p-6 shadow-2xl backdrop-blur" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-md" role="dialog" aria-modal="true" onClick={onClose}>
+      <div className="glass-strong w-full max-w-2xl rounded-3xl border border-slate-600/30 p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h3 className="text-xl font-bold text-slate-900">Share & Export</h3>
-            <p className="mt-1 text-sm text-slate-600">
-              View: <span className="font-medium">{view}</span> • Records: <span className="font-medium">{count}</span>
+            <h3 className="text-xl font-bold text-slate-100">Share & Export</h3>
+            <p className="mt-1 text-sm text-slate-400">
+              View: <span className="font-medium text-slate-300">{view}</span> • Records: <span className="font-medium text-slate-300">{count}</span>
             </p>
           </div>
           <button 
             type="button" 
             onClick={onClose} 
-            className="rounded-xl border border-slate-200 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-500/10"
+            className="glass rounded-xl px-4 py-2 text-sm font-semibold text-slate-200 shadow-sm transition hover:bg-slate-700/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/20"
           >
             Close
           </button>
@@ -767,21 +785,21 @@ function ShareExportModal({ onClose, view, categoryFilter, cycleFilter, statusFi
         <div className="mt-6 space-y-5">
           {/* Save Report Section */}
           {!savedReportId && (
-            <div className="rounded-2xl border border-sky-200/60 bg-sky-50/70 p-5">
-              <p className="text-xs font-bold uppercase tracking-wide text-sky-700">Save Report</p>
-              <p className="mt-2 text-sm text-slate-600">
+            <div className="glass rounded-2xl border border-blue-500/20 bg-blue-500/10 p-5">
+              <p className="text-xs font-bold uppercase tracking-wide text-blue-400">Save Report</p>
+              <p className="mt-2 text-sm text-slate-300">
                 Save your subscriptions and filters to generate a permanent shareable link. Anyone with the link can view your report.
               </p>
               <div className="mt-4">
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Your Name <span className="text-red-500">*</span>
+                <label className="block text-sm font-medium text-slate-200 mb-2">
+                  Your Name <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
                   value={authorName}
                   onChange={(e) => setAuthorName(e.target.value)}
                   placeholder="Enter your name"
-                  className="w-full rounded-xl border border-slate-200/80 bg-white/80 px-3 py-2 text-sm text-slate-800 shadow-sm transition placeholder:text-slate-400 focus:border-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-500/10"
+                  className="input-enhanced w-full rounded-xl px-4 py-2.5 text-sm font-medium text-slate-100 placeholder:text-slate-500"
                 />
                 <p className="mt-1 text-xs text-slate-500">Your name will be displayed when others view this report</p>
               </div>
@@ -789,7 +807,7 @@ function ShareExportModal({ onClose, view, categoryFilter, cycleFilter, statusFi
                 type="button"
                 onClick={handleSaveAndShare}
                 disabled={savingReport || !authorName.trim()}
-                className="mt-4 rounded-xl bg-sky-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+                className="btn-primary glow-hover mt-4 rounded-xl px-6 py-3 text-sm font-bold text-white transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {savingReport ? "Saving..." : "Save Report & Generate Link"}
               </button>
@@ -797,33 +815,33 @@ function ShareExportModal({ onClose, view, categoryFilter, cycleFilter, statusFi
           )}
 
           {/* Share Link Section */}
-          <div className="rounded-2xl border border-slate-200/70 bg-slate-50/70 p-5">
-            <p className="text-xs font-bold uppercase tracking-wide text-slate-600">
+          <div className="glass rounded-2xl p-5">
+            <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
               {savedReportId ? "Shareable Link" : "Sharing"}
             </p>
             {!savedReportId ? (
-              <p className="mt-2 text-sm text-slate-600">
+              <p className="mt-2 text-sm text-slate-300">
                 Save the report to generate a shareable link that works in a new tab or on another device.
               </p>
             ) : (
               <>
                 {reportAuthor && (
-                  <p className="mt-1 text-xs text-slate-600">
-                    Report by <span className="font-semibold">{reportAuthor}</span>
+                  <p className="mt-1 text-xs text-slate-400">
+                    Report by <span className="font-semibold text-slate-300">{reportAuthor}</span>
                   </p>
                 )}
-                <p className="mt-1 text-xs text-green-600">
+                <p className="mt-1 text-xs text-emerald-400">
                   Report saved. This link will work for anyone with access to it.
                 </p>
-                <div className="mt-3 rounded-xl border border-slate-200/70 bg-white/80 p-3">
-                  <p className="break-all text-sm text-slate-700">{displayUrl}</p>
+                <div className="glass mt-3 rounded-xl p-3">
+                  <p className="break-all text-sm text-slate-200">{displayUrl}</p>
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <CopyButton value={displayUrl} />
                   <button
                     type="button"
                     onClick={onShareNative}
-                    className="rounded-xl border border-slate-200 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-500/10"
+                    className="glass rounded-xl px-4 py-2 text-sm font-semibold text-slate-200 shadow-sm transition hover:bg-slate-700/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/20"
                   >
                     Native Share
                   </button>
@@ -834,8 +852,8 @@ function ShareExportModal({ onClose, view, categoryFilter, cycleFilter, statusFi
 
           {/* Social Media Share (only when report is saved) */}
           {savedReportId && (
-            <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-5">
-              <p className="text-xs font-bold uppercase tracking-wide text-slate-600">Social Media</p>
+            <div className="glass rounded-2xl p-5">
+              <p className="text-xs font-bold uppercase tracking-wide text-slate-400">Social Media</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <SocialButton label="LinkedIn" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(displayUrl)}`} />
                 <SocialButton label="X / Twitter" href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(displayUrl)}&text=${encodeURIComponent('Check out my subscription analytics!')}`} />
@@ -846,20 +864,20 @@ function ShareExportModal({ onClose, view, categoryFilter, cycleFilter, statusFi
           )}
 
           {/* Export Data */}
-          <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-5">
-            <p className="text-xs font-bold uppercase tracking-wide text-slate-600">Export Data</p>
+          <div className="glass rounded-2xl p-5">
+            <p className="text-xs font-bold uppercase tracking-wide text-slate-400">Export Data</p>
             <div className="mt-4 flex flex-wrap gap-2">
               <button 
                 type="button" 
                 onClick={onExportCSV} 
-                className="rounded-xl bg-sky-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-500/20"
+                className="glow-hover rounded-xl border border-cyan-500/30 bg-gradient-to-r from-blue-600 to-cyan-600 px-6 py-3 text-sm font-bold text-white shadow-xl transition hover:from-blue-500 hover:to-cyan-500 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40"
               >
                 Download CSV
               </button>
               <button 
                 type="button" 
                 onClick={onExportJSON} 
-                className="rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-950 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-500/20"
+                className="glow-hover rounded-xl border border-pink-500/30 bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-sm font-bold text-white shadow-xl transition hover:from-purple-500 hover:to-pink-500 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-purple-500/40"
               >
                 Download JSON
               </button>
@@ -881,7 +899,7 @@ function CopyButton({ value }: { value: string }) {
   return (
     <button
       type="button"
-      className="rounded-xl border border-slate-200 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-500/10"
+      className="glass rounded-xl px-4 py-2 text-sm font-semibold text-slate-200 shadow-sm transition hover:bg-slate-700/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/20"
       onClick={async () => {
         try {
           await navigator.clipboard.writeText(value);
@@ -892,7 +910,7 @@ function CopyButton({ value }: { value: string }) {
         }
       }}
     >
-      {copied ? "Copied!" : "Copy Link"}
+      {copied ? "✓ Copied!" : "Copy Link"}
     </button>
   );
 }
@@ -900,7 +918,7 @@ function CopyButton({ value }: { value: string }) {
 function SocialButton({ label, href }: { label: string; href: string }) {
   return (
     <a
-      className="rounded-xl border border-slate-200 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-white"
+      className="glass rounded-xl px-4 py-2 text-sm font-semibold text-slate-200 shadow-sm transition hover:bg-slate-700/50"
       href={href}
       target="_blank"
       rel="noreferrer"
