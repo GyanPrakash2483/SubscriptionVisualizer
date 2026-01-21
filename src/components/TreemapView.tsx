@@ -13,16 +13,11 @@ type SubscriptionRecord = {
   status: string;
   billingCycle: string;
   monthlyCost: number;
-  annualCost?: number;
-  startDate: string;
-  renewalDate: string;
-  usage?: number;
   notes?: string;
 };
 
 type TreemapViewProps = {
   data: SubscriptionRecord[];
-  metric: "count" | "revenue";
 };
 
 const currency = new Intl.NumberFormat("en-US", {
@@ -33,14 +28,14 @@ const currency = new Intl.NumberFormat("en-US", {
 
 function monthlyValue(item: SubscriptionRecord) {
   if (item.billingCycle === "Annual") {
-    return (item.annualCost ?? item.monthlyCost * 12) / 12;
+    return item.monthlyCost / 12;
   }
   return item.monthlyCost;
 }
 
 function annualValue(item: SubscriptionRecord) {
   if (item.billingCycle === "Annual") {
-    return item.annualCost ?? item.monthlyCost * 12;
+    return item.monthlyCost;
   }
   return item.monthlyCost * 12;
 }
@@ -77,25 +72,31 @@ const statusColors: Record<string, string> = {
   Trial: "#3b82f6",
 };
 
-function getIconForService(serviceName: string): string {
-  const iconMap: Record<string, any> = {
-    "HBO Max": SiHbo,
-    "LinkedIn Premium": SiLinkedin,
-    "PlayStation Plus": SiPlaystation,
-    "Peacock": SiNbc,
-    "NYTimes": SiNewyorktimes,
-    "Audible": SiAudible,
-    "Apple Music": SiApplemusic,
-  };
+const serviceIconMap: Record<string, any> = {
+  "HBO Max": SiHbo,
+  "LinkedIn Premium": SiLinkedin,
+  "PlayStation Plus": SiPlaystation,
+  "Peacock": SiNbc,
+  "NYTimes": SiNewyorktimes,
+  "Audible": SiAudible,
+  "Apple Music": SiApplemusic,
+};
 
-  const Icon = iconMap[serviceName];
+function getServiceInitial(serviceName: string): string {
+  const trimmed = serviceName.trim();
+  if (!trimmed) return "?";
+  return trimmed[0]?.toUpperCase() ?? "?";
+}
+
+function getIconForService(serviceName: string, size: number, color: string): string {
+  const Icon = serviceIconMap[serviceName];
   if (Icon) {
-    return renderToString(<Icon size={24} color="#ffffff" />);
+    return renderToString(<Icon size={size} color={color} />);
   }
   return "";
 }
 
-export default function TreemapView({ data, metric }: TreemapViewProps) {
+export default function TreemapView({ data }: TreemapViewProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -137,14 +138,13 @@ export default function TreemapView({ data, metric }: TreemapViewProps) {
       
       return {
         name: item.serviceName,
-        value: metric === "count" ? 1 : monthly,
+        value: monthly,
         monthly,
         annual: annualValue(item),
         percentage,
         status: item.status,
         category: item.category,
         billing: item.billingCycle,
-        usage: item.usage,
         color: colorMap[item.serviceName],
       };
     });
@@ -218,16 +218,43 @@ export default function TreemapView({ data, metric }: TreemapViewProps) {
       const height = d.y1 - d.y0;
       
       if (width > 80 && height > 80) {
-        const iconSvg = getIconForService(d.data.name);
-        if (iconSvg) {
-          d3.select(this)
-            .append("foreignObject")
-            .attr("x", 8)
-            .attr("y", 8)
-            .attr("width", 28)
-            .attr("height", 28)
-            .html(`<div style="width: 28px; height: 28px; opacity: 0.9;">${iconSvg}</div>`);
-        }
+        const badgeSize = 28;
+        const glyphSize = 16;
+        const iconColor = serviceColors[d.data.name] || "#0f172a";
+        const iconSvg = getIconForService(d.data.name, glyphSize, iconColor);
+        const content = iconSvg
+          ? iconSvg
+          : `<span style="
+              font-size: 14px;
+              font-weight: 800;
+              color: ${iconColor};
+              line-height: 1;
+              font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji';
+            ">${getServiceInitial(d.data.name)}</span>`;
+
+        d3.select(this)
+          .append("foreignObject")
+          .attr("x", 8)
+          .attr("y", 8)
+          .attr("width", badgeSize)
+          .attr("height", badgeSize)
+          .style("pointer-events", "none")
+          .html(
+            `<div style="
+              width: ${badgeSize}px;
+              height: ${badgeSize}px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background: #ffffff;
+              border-radius: 9999px;
+              border: 1px solid rgba(15, 23, 42, 0.14);
+              box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+              opacity: 0.98;
+              pointer-events: none;
+              user-select: none;
+            ">${content}</div>`
+          );
       }
     });
 
@@ -240,7 +267,10 @@ export default function TreemapView({ data, metric }: TreemapViewProps) {
       })
       .attr("y", (d: any) => {
         const width = d.x1 - d.x0;
-        return width > 80 ? 44 : 18;
+        const height = d.y1 - d.y0;
+        const reserveIconSpace = width > 80 && height > 80;
+        // If we render an icon badge at the top, push the label down a bit for breathing room.
+        return width > 80 ? (reserveIconSpace ? 54 : 28) : 18;
       })
       .attr("text-anchor", (d: any) => {
         const width = d.x1 - d.x0;
@@ -274,7 +304,8 @@ export default function TreemapView({ data, metric }: TreemapViewProps) {
       .attr("y", (d: any) => {
         const width = d.x1 - d.x0;
         const height = d.y1 - d.y0;
-        if (width > 80) return 64;
+        const reserveIconSpace = width > 80 && height > 80;
+        if (width > 80) return reserveIconSpace ? 74 : 52;
         return height / 2 + 6;
       })
       .attr("text-anchor", (d: any) => {
@@ -307,7 +338,9 @@ export default function TreemapView({ data, metric }: TreemapViewProps) {
       })
       .attr("y", (d: any) => {
         const width = d.x1 - d.x0;
-        return width > 80 ? 84 : (d.y1 - d.y0) - 10;
+        const height = d.y1 - d.y0;
+        const reserveIconSpace = width > 80 && height > 80;
+        return width > 80 ? (reserveIconSpace ? 94 : 72) : height - 10;
       })
       .attr("text-anchor", (d: any) => {
         const width = d.x1 - d.x0;
@@ -409,12 +442,6 @@ export default function TreemapView({ data, metric }: TreemapViewProps) {
                 <span style="color: #94a3b8;">Billing:</span>
                 <span style="font-weight: 600;">${d.data.billing}</span>
               </div>
-              ${d.data.usage ? `
-                <div style="display: flex; justify-content: space-between; gap: 24px;">
-                  <span style="color: #94a3b8;">Usage:</span>
-                  <span style="font-weight: 600;">${d.data.usage}h/month</span>
-                </div>
-              ` : ''}
             </div>
           `)
           .style("left", (event.pageX + 15) + "px")
@@ -424,7 +451,7 @@ export default function TreemapView({ data, metric }: TreemapViewProps) {
         tooltip.style("visibility", "hidden");
       });
 
-  }, [data, metric, totalValue, colorMap]);
+  }, [data, totalValue, colorMap]);
 
   if (data.length === 0) {
     return (

@@ -12,10 +12,6 @@ type SubscriptionRecord = {
   status: string;
   billingCycle: string;
   monthlyCost: number;
-  annualCost?: number;
-  startDate: string;
-  renewalDate: string;
-  usage?: number;
   notes?: string;
 };
 
@@ -31,14 +27,14 @@ const currency = new Intl.NumberFormat("en-US", {
 
 function monthlyValue(item: SubscriptionRecord) {
   if (item.billingCycle === "Annual") {
-    return (item.annualCost ?? item.monthlyCost * 12) / 12;
+    return item.monthlyCost / 12;
   }
   return item.monthlyCost;
 }
 
 function annualValue(item: SubscriptionRecord) {
   if (item.billingCycle === "Annual") {
-    return item.annualCost ?? item.monthlyCost * 12;
+    return item.monthlyCost;
   }
   return item.monthlyCost * 12;
 }
@@ -86,20 +82,26 @@ const statusColors: Record<string, string> = {
   Trial: "#3b82f6",
 };
 
-function getIconForService(serviceName: string): string {
-  const iconMap: Record<string, any> = {
-    "HBO Max": SiHbo,
-    "LinkedIn Premium": SiLinkedin,
-    "PlayStation Plus": SiPlaystation,
-    "Peacock": SiNbc,
-    "NYTimes": SiNewyorktimes,
-    "Audible": SiAudible,
-    "Apple Music": SiApplemusic,
-  };
+const serviceIconMap: Record<string, any> = {
+  "HBO Max": SiHbo,
+  "LinkedIn Premium": SiLinkedin,
+  "PlayStation Plus": SiPlaystation,
+  "Peacock": SiNbc,
+  "NYTimes": SiNewyorktimes,
+  "Audible": SiAudible,
+  "Apple Music": SiApplemusic,
+};
 
-  const Icon = iconMap[serviceName];
+function getServiceInitial(serviceName: string): string {
+  const trimmed = serviceName.trim();
+  if (!trimmed) return "?";
+  return trimmed[0]?.toUpperCase() ?? "?";
+}
+
+function getIconForService(serviceName: string, size: number, color: string): string {
+  const Icon = serviceIconMap[serviceName];
   if (Icon) {
-    return renderToString(<Icon size={20} color="#ffffff" />);
+    return renderToString(<Icon size={size} color={color} />);
   }
   return "";
 }
@@ -147,7 +149,6 @@ export default function BubbleView({ data }: BubbleViewProps) {
             monthly: monthlyValue(item),
             annual: annualValue(item),
             billing: item.billingCycle,
-            usage: item.usage,
             color: colorMap[item.serviceName],
           })),
         };
@@ -231,31 +232,54 @@ export default function BubbleView({ data }: BubbleViewProps) {
                   // Only show icons for bubbles with radius > 20
                   if (radius < 20) return null;
                   
-                  const iconSvg = getIconForService(node.id);
-                  if (!iconSvg) return null;
-
-                  const iconSize = Math.min(24, radius * 0.6);
+                  const badgeSize = Math.min(28, radius * 0.7);
+                  const glyphSize = Math.max(14, Math.floor(badgeSize * 0.62));
+                  const iconColor = node.data?.color || "#0f172a";
+                  const iconSvg = getIconForService(node.id, glyphSize, iconColor);
+                  const initial = getServiceInitial(node.id);
                   
                   return (
                     <g key={node.id} transform={`translate(${node.x},${node.y})`}>
                       <foreignObject
-                        x={-iconSize / 2}
-                        y={-iconSize / 2}
-                        width={iconSize}
-                        height={iconSize}
+                        x={-badgeSize / 2}
+                        y={-badgeSize / 2}
+                        width={badgeSize}
+                        height={badgeSize}
                         style={{ pointerEvents: 'none' }}
                       >
                         <div
                           style={{
-                            width: `${iconSize}px`,
-                            height: `${iconSize}px`,
-                            opacity: 0.95,
+                            width: `${badgeSize}px`,
+                            height: `${badgeSize}px`,
+                            opacity: 0.98,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
+                            backgroundColor: '#ffffff',
+                            borderRadius: '9999px',
+                            border: '1px solid rgba(15, 23, 42, 0.14)',
+                            boxShadow: '0 6px 16px rgba(0, 0, 0, 0.22)',
+                            userSelect: 'none',
                           }}
-                          dangerouslySetInnerHTML={{ __html: iconSvg }}
-                        />
+                        >
+                          {iconSvg ? (
+                            <div
+                              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                              dangerouslySetInnerHTML={{ __html: iconSvg }}
+                            />
+                          ) : (
+                            <span
+                              style={{
+                                fontSize: `${Math.max(13, Math.floor(badgeSize * 0.52))}px`,
+                                fontWeight: 800,
+                                color: iconColor,
+                                lineHeight: 1,
+                              }}
+                            >
+                              {initial}
+                            </span>
+                          )}
+                        </div>
                       </foreignObject>
                     </g>
                   );
@@ -333,12 +357,6 @@ export default function BubbleView({ data }: BubbleViewProps) {
                       <span className="text-slate-500">Billing:</span>
                       <span className="font-medium">{node.data.billing}</span>
                     </div>
-                    {node.data.usage && (
-                      <div className="flex justify-between gap-4">
-                        <span className="text-slate-500">Usage:</span>
-                        <span className="font-medium">{node.data.usage}h/month</span>
-                      </div>
-                    )}
                   </div>
                 </div>
               );

@@ -3,10 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 
-const TreemapView = dynamic(() => import("@/components/TreemapView"), { ssr: false });
-const SwarmView = dynamic(() => import("@/components/SwarmView"), { ssr: false });
-const BubbleView = dynamic(() => import("@/components/BubbleView"), { ssr: false });
-
 type SubscriptionRecord = {
   id: string;
   serviceName: string;
@@ -14,29 +10,29 @@ type SubscriptionRecord = {
   status: "Active" | "Cancelled" | "Paused" | "Trial";
   billingCycle: "Monthly" | "Annual";
   monthlyCost: number;
-  annualCost?: number;
-  startDate: string;
-  renewalDate: string;
-  usage?: number;
   notes?: string;
 };
 
+const TreemapView = dynamic<{ data: SubscriptionRecord[] }>(() => import("@/components/TreemapView"), { ssr: false });
+const SwarmView = dynamic<{ data: SubscriptionRecord[] }>(() => import("@/components/SwarmView"), { ssr: false });
+const BubbleView = dynamic<{ data: SubscriptionRecord[] }>(() => import("@/components/BubbleView"), { ssr: false });
+
 const sampleData: SubscriptionRecord[] = [
-  { id: "SUB-001", serviceName: "Netflix", category: "Streaming", status: "Active", billingCycle: "Monthly", monthlyCost: 15.49, annualCost: 185.88, startDate: "2024-01-12", renewalDate: "2025-01-12", usage: 40 },
-  { id: "SUB-002", serviceName: "Amazon Prime", category: "Shopping", status: "Active", billingCycle: "Annual", monthlyCost: 11.58, annualCost: 139, startDate: "2024-03-02", renewalDate: "2025-03-02", usage: 12 },
-  { id: "SUB-003", serviceName: "Disney+", category: "Streaming", status: "Active", billingCycle: "Monthly", monthlyCost: 13.99, annualCost: 167.88, startDate: "2024-02-15", renewalDate: "2025-02-15", usage: 25 },
-  { id: "SUB-004", serviceName: "Spotify", category: "Music", status: "Active", billingCycle: "Monthly", monthlyCost: 10.99, annualCost: 131.88, startDate: "2023-11-04", renewalDate: "2024-11-04", usage: 60 },
-  { id: "SUB-005", serviceName: "YouTube Premium", category: "Streaming", status: "Trial", billingCycle: "Monthly", monthlyCost: 0, annualCost: 0, startDate: "2024-05-10", renewalDate: "2024-06-10", usage: 15 },
-  { id: "SUB-006", serviceName: "Apple iCloud", category: "Utilities", status: "Active", billingCycle: "Monthly", monthlyCost: 2.99, annualCost: 35.88, startDate: "2024-04-08", renewalDate: "2025-04-08", usage: 200 },
-  { id: "SUB-007", serviceName: "Xbox Game Pass", category: "Gaming", status: "Paused", billingCycle: "Monthly", monthlyCost: 16.99, annualCost: 203.88, startDate: "2023-09-01", renewalDate: "2025-09-01", usage: 10 },
-  { id: "SUB-008", serviceName: "Hulu", category: "Streaming", status: "Cancelled", billingCycle: "Monthly", monthlyCost: 7.99, annualCost: 95.88, startDate: "2024-06-14", renewalDate: "2025-06-14", usage: 5 },
-  { id: "SUB-009", serviceName: "Audible", category: "News", status: "Active", billingCycle: "Monthly", monthlyCost: 14.95, annualCost: 179.4, startDate: "2023-12-22", renewalDate: "2024-12-22", usage: 8 },
-  { id: "SUB-010", serviceName: "NYTimes", category: "News", status: "Active", billingCycle: "Monthly", monthlyCost: 8, annualCost: 96, startDate: "2024-07-02", renewalDate: "2024-08-02", usage: 20 },
-  { id: "SUB-011", serviceName: "HBO Max", category: "Streaming", status: "Active", billingCycle: "Monthly", monthlyCost: 15.99, annualCost: 191.88, startDate: "2024-01-20", renewalDate: "2025-01-20", usage: 35 },
-  { id: "SUB-012", serviceName: "Apple Music", category: "Music", status: "Active", billingCycle: "Monthly", monthlyCost: 10.99, annualCost: 131.88, startDate: "2024-02-10", renewalDate: "2025-02-10", usage: 80 },
-  { id: "SUB-013", serviceName: "PlayStation Plus", category: "Gaming", status: "Active", billingCycle: "Annual", monthlyCost: 5, annualCost: 60, startDate: "2024-03-15", renewalDate: "2025-03-15", usage: 25 },
-  { id: "SUB-014", serviceName: "LinkedIn Premium", category: "Utilities", status: "Trial", billingCycle: "Monthly", monthlyCost: 0, annualCost: 0, startDate: "2024-06-01", renewalDate: "2024-07-01", usage: 5 },
-  { id: "SUB-015", serviceName: "Peacock", category: "Streaming", status: "Active", billingCycle: "Monthly", monthlyCost: 5.99, annualCost: 71.88, startDate: "2024-04-12", renewalDate: "2025-04-12", usage: 18 },
+  { id: "SUB-001", serviceName: "Netflix", category: "Streaming", status: "Active", billingCycle: "Monthly", monthlyCost: 15.49 },
+  { id: "SUB-002", serviceName: "Amazon Prime", category: "Shopping", status: "Active", billingCycle: "Annual", monthlyCost: 11.58 },
+  { id: "SUB-003", serviceName: "Disney+", category: "Streaming", status: "Active", billingCycle: "Monthly", monthlyCost: 13.99 },
+  { id: "SUB-004", serviceName: "Spotify", category: "Music", status: "Active", billingCycle: "Monthly", monthlyCost: 10.99 },
+  { id: "SUB-005", serviceName: "YouTube Premium", category: "Streaming", status: "Trial", billingCycle: "Monthly", monthlyCost: 0 },
+  { id: "SUB-006", serviceName: "Apple iCloud", category: "Utilities", status: "Active", billingCycle: "Monthly", monthlyCost: 2.99 },
+  { id: "SUB-007", serviceName: "Xbox Game Pass", category: "Gaming", status: "Paused", billingCycle: "Monthly", monthlyCost: 16.99 },
+  { id: "SUB-008", serviceName: "Hulu", category: "Streaming", status: "Cancelled", billingCycle: "Monthly", monthlyCost: 7.99 },
+  { id: "SUB-009", serviceName: "Audible", category: "News", status: "Active", billingCycle: "Monthly", monthlyCost: 14.95 },
+  { id: "SUB-010", serviceName: "NYTimes", category: "News", status: "Active", billingCycle: "Monthly", monthlyCost: 8 },
+  { id: "SUB-011", serviceName: "HBO Max", category: "Streaming", status: "Active", billingCycle: "Monthly", monthlyCost: 15.99 },
+  { id: "SUB-012", serviceName: "Apple Music", category: "Music", status: "Active", billingCycle: "Monthly", monthlyCost: 10.99 },
+  { id: "SUB-013", serviceName: "PlayStation Plus", category: "Gaming", status: "Active", billingCycle: "Annual", monthlyCost: 5 },
+  { id: "SUB-014", serviceName: "LinkedIn Premium", category: "Utilities", status: "Trial", billingCycle: "Monthly", monthlyCost: 0 },
+  { id: "SUB-015", serviceName: "Peacock", category: "Streaming", status: "Active", billingCycle: "Monthly", monthlyCost: 5.99 },
 ];
 
 const categories: SubscriptionRecord["category"][] = ["Streaming", "Music", "Gaming", "Shopping", "News", "Utilities", "Other"];
@@ -46,16 +42,6 @@ const billingCycles: SubscriptionRecord["billingCycle"][] = ["Monthly", "Annual"
 type ViewMode = "treemap" | "swarm" | "bubble";
 
 const currency = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
-
-function monthKey(date: string) {
-  const d = new Date(date);
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-}
-
-function monthLabel(key: string) {
-  const [year, month] = key.split("-");
-  return `${new Date(Number(year), Number(month) - 1, 1).toLocaleString("en", { month: "short", year: "2-digit" })}`;
-}
 
 function normalize(value: number, min: number, max: number) {
   if (max === min) return 0;
@@ -73,14 +59,14 @@ function hashToRange(seed: string, range: number) {
 
 function monthlyValue(item: SubscriptionRecord) {
   if (item.billingCycle === "Annual") {
-    return (item.annualCost ?? item.monthlyCost * 12) / 12;
+    return item.monthlyCost / 12;
   }
   return item.monthlyCost;
 }
 
 function annualValue(item: SubscriptionRecord) {
   if (item.billingCycle === "Annual") {
-    return item.annualCost ?? item.monthlyCost * 12;
+    return item.monthlyCost;
   }
   return item.monthlyCost * 12;
 }
@@ -94,9 +80,6 @@ function toCSV(rows: SubscriptionRecord[]) {
     "billingCycle",
     "monthlyCost",
     "annualCost",
-    "startDate",
-    "renewalDate",
-    "usage",
     "notes",
   ];
   const lines = rows.map((r) =>
@@ -107,10 +90,7 @@ function toCSV(rows: SubscriptionRecord[]) {
       r.status,
       r.billingCycle,
       r.monthlyCost,
-      r.annualCost ?? "",
-      r.startDate,
-      r.renewalDate,
-      r.usage ?? "",
+      annualValue(r),
       r.notes ?? "",
     ]
       .map((v) => `"${String(v).replace(/"/g, '""')}"`)
@@ -136,32 +116,98 @@ export default function Home() {
   const [categoryFilter, setCategoryFilter] = useState<string>("All categories");
   const [cycleFilter, setCycleFilter] = useState<string>("All billing");
   const [statusFilter, setStatusFilter] = useState<string>("All statuses");
-  const [metric, setMetric] = useState<"count" | "revenue">("revenue");
   const [shareOpen, setShareOpen] = useState(false);
+  const [reportId, setReportId] = useState<string | null>(null);
+  const [savingReport, setSavingReport] = useState(false);
+  const [loadingReport, setLoadingReport] = useState(false);
+  const [reportAuthor, setReportAuthor] = useState<string | null>(null);
   const [draft, setDraft] = useState<Omit<SubscriptionRecord, "id">>({
     serviceName: "",
     category: "Streaming",
     status: "Active",
     billingCycle: "Monthly",
-    startDate: "",
-    renewalDate: "",
     monthlyCost: 15,
-    annualCost: 180,
-    usage: 0,
     notes: "",
   });
 
+  // Load report from MongoDB if reportId is in URL
   useEffect(() => {
     if (typeof window === "undefined") return;
     const params = new URLSearchParams(window.location.search);
+    const rid = params.get("reportId");
+    
+    if (rid) {
+      setReportId(rid);
+      setLoadingReport(true);
+      // Load report from API
+      fetch(`/api/reports?id=${rid}`)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`Failed to fetch report: ${res.status}`);
+          }
+          return res.json();
+        })
+        .then((data) => {
+          if (data.success && data.report) {
+            // Load subscriptions first
+            const loadedSubscriptions = data.report.subscriptions || [];
+            setEntries(loadedSubscriptions);
+            
+            // Load author name
+            if (data.report.authorName) {
+              setReportAuthor(data.report.authorName);
+            }
+            
+            // Load view
+            if (data.report.view) setView(data.report.view);
+            
+            // Load filters (only if they exist, otherwise keep defaults)
+            if (data.report.filters) {
+              if (data.report.filters.category) {
+                setCategoryFilter(data.report.filters.category);
+              } else {
+                setCategoryFilter("All categories");
+              }
+              if (data.report.filters.billing) {
+                setCycleFilter(data.report.filters.billing);
+              } else {
+                setCycleFilter("All billing");
+              }
+              if (data.report.filters.status) {
+                setStatusFilter(data.report.filters.status);
+              } else {
+                setStatusFilter("All statuses");
+              }
+            }
+            
+            // Only go to analytics if we have subscriptions
+            if (loadedSubscriptions.length > 0) {
+              setStep(2);
+            } else {
+              setStep(1);
+            }
+          } else {
+            console.error("Report data invalid:", data);
+            alert("Failed to load report. The link may be invalid or expired.");
+          }
+        })
+        .catch((err) => {
+          console.error("Failed to load report:", err);
+          alert("Failed to load report. Please check your connection and try again.");
+        })
+        .finally(() => {
+          setLoadingReport(false);
+        });
+      return;
+    }
+
+    // Otherwise load from URL params (legacy support)
     const v = params.get("view");
-    const m = params.get("metric");
     const s = params.get("step");
     const c = params.get("category");
     const b = params.get("billing");
     const st = params.get("status");
     if (v === "treemap" || v === "swarm" || v === "bubble") setView(v);
-    if (m === "count" || m === "revenue") setMetric(m);
     if (s === "2") setStep(2);
     if (c) setCategoryFilter(c);
     if (b) setCycleFilter(b);
@@ -186,35 +232,80 @@ export default function Home() {
     return { totalMonthly, totalAnnual, cancelled, active, avgMonthlyPerSub };
   }, [filtered]);
 
-  const heatmapData = useMemo(() => {
-    const months = Array.from(new Set(filtered.map((s) => monthKey(s.startDate)))).sort();
-    const services = Array.from(new Set(filtered.map((s) => s.serviceName))).sort();
-    const matrix = services.map((service) =>
-      months.map((month) => {
-        const entriesForCell = filtered.filter((s) => s.serviceName === service && monthKey(s.startDate) === month);
-        if (metric === "count") return entriesForCell.length;
-        return entriesForCell.reduce((sum, item) => sum + monthlyValue(item), 0);
-      }),
-    );
-    const flat = matrix.flat();
-    const max = Math.max(...flat, 1);
-    const min = Math.min(...flat, 0);
-    return { months, services, matrix, min, max };
-  }, [filtered, metric]);
-
 
 
   const shareUrl = useMemo(() => {
     if (typeof window === "undefined") return "";
-    const url = new URL(window.location.href);
+    const url = new URL(window.location.origin + window.location.pathname);
+    
+    // If we have a reportId, use that for sharing
+    if (reportId) {
+      url.searchParams.set("reportId", reportId);
+      return url.toString();
+    }
+    
+    // Otherwise use query params (legacy)
     url.searchParams.set("view", view);
-    url.searchParams.set("metric", metric);
     url.searchParams.set("step", String(step));
     if (categoryFilter !== "All categories") url.searchParams.set("category", categoryFilter);
     if (cycleFilter !== "All billing") url.searchParams.set("billing", cycleFilter);
     if (statusFilter !== "All statuses") url.searchParams.set("status", statusFilter);
     return url.toString();
-  }, [metric, categoryFilter, cycleFilter, statusFilter, step, view]);
+  }, [categoryFilter, cycleFilter, statusFilter, step, view, reportId]);
+
+  async function handleSaveReport(authorName: string) {
+    if (entries.length === 0) {
+      alert("No subscriptions to save");
+      return null;
+    }
+
+    if (!authorName || authorName.trim().length === 0) {
+      alert("Please enter your name to save the report");
+      return null;
+    }
+
+    setSavingReport(true);
+    try {
+      const response = await fetch("/api/reports", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          subscriptions: entries,
+          filters: {
+            category: categoryFilter !== "All categories" ? categoryFilter : undefined,
+            billing: cycleFilter !== "All billing" ? cycleFilter : undefined,
+            status: statusFilter !== "All statuses" ? statusFilter : undefined,
+          },
+          view,
+          summary,
+          authorName: authorName.trim(),
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success && data.reportId) {
+        setReportId(data.reportId);
+        // Update URL with reportId
+        const url = new URL(window.location.href);
+        url.searchParams.delete("view");
+        url.searchParams.delete("step");
+        url.searchParams.delete("category");
+        url.searchParams.delete("billing");
+        url.searchParams.delete("status");
+        url.searchParams.set("reportId", data.reportId);
+        window.history.replaceState(null, "", url.toString());
+        return data.reportId;
+      } else {
+        throw new Error(data.error || "Failed to save report");
+      }
+    } catch (error) {
+      console.error("Error saving report:", error);
+      alert("Failed to save report. Please try again.");
+      return null;
+    } finally {
+      setSavingReport(false);
+    }
+  }
 
   // Update URL when shareUrl changes
   useEffect(() => {
@@ -229,22 +320,10 @@ export default function Home() {
       return;
     }
 
-    const start =
-      draft.startDate && draft.startDate.trim().length > 0
-        ? draft.startDate
-        : new Date().toISOString().slice(0, 10);
-    const renewal =
-      draft.renewalDate && draft.renewalDate.trim().length > 0
-        ? draft.renewalDate
-        : new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
-            .toISOString()
-            .slice(0, 10);
     setEntries((prev) => [
       ...prev,
       {
         ...draft,
-        startDate: start,
-        renewalDate: renewal,
         id: `SUB-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
       },
     ]);
@@ -253,11 +332,7 @@ export default function Home() {
       category: "Streaming",
       status: "Active",
       billingCycle: "Monthly",
-      startDate: "",
-      renewalDate: "",
       monthlyCost: 15,
-      annualCost: 180,
-      usage: 0,
       notes: "",
     });
   }
@@ -292,34 +367,38 @@ export default function Home() {
         <header className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-xs font-semibold uppercase tracking-wide text-sky-700">Subscription Visualizer</p>
-            <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">Manage & visualize subscriptions</h1>
-            <p className="text-sm text-slate-600">Step {step} of 2 • {entries.length} subscription{entries.length !== 1 ? 's' : ''}</p>
+            <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">
+              {reportAuthor ? `Report by ${reportAuthor}` : "Manage & visualize subscriptions"}
+            </h1>
+            <p className="text-sm text-slate-600">
+              {reportAuthor ? `Shared subscription report • ${entries.length} subscription${entries.length !== 1 ? 's' : ''}` : `Step ${step} of 2 • ${entries.length} subscription${entries.length !== 1 ? 's' : ''}`}
+            </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={() => setShareOpen(true)}
-              className="rounded-full bg-sky-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={entries.length === 0}
-            >
-              Share / Export
-            </button>
             <button
               type="button"
               onClick={() => {
                 if (step === 1 && entries.length === 0) return;
                 setStep((prev) => (prev === 1 ? 2 : 1));
               }}
-              className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-400 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="rounded-full bg-sky-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-500/20 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={step === 1 && entries.length === 0}
             >
-              {step === 1 ? "View Analytics →" : "← Back to Input"}
+              {step === 1 ? "View Analytics" : "Back to Input"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setShareOpen(true)}
+              className="rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-500/10 disabled:cursor-not-allowed disabled:opacity-50"
+              disabled={entries.length === 0}
+            >
+              Share / Export
             </button>
           </div>
         </header>
 
         {step === 1 && (
-          <section className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <section className="grid gap-4 rounded-2xl border border-slate-200/60 bg-white/70 p-5 shadow-sm backdrop-blur">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <h2 className="text-xl font-semibold text-slate-900">Enter your subscriptions</h2>
@@ -329,7 +408,7 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={() => setEntries(sampleData)}
-                  className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:border-slate-400 hover:bg-slate-50"
+                  className="rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-500/10"
                 >
                   Load sample data
                 </button>
@@ -337,7 +416,7 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() => setEntries([])}
-                    className="rounded-full border border-red-300 bg-white px-4 py-2 text-sm font-semibold text-red-600 hover:border-red-400 hover:bg-red-50"
+                    className="rounded-full border border-red-200 bg-white/70 px-4 py-2 text-sm font-semibold text-red-600 shadow-sm transition hover:border-red-300 hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-red-500/10"
                   >
                     Clear all
                   </button>
@@ -351,10 +430,6 @@ export default function Home() {
               <SelectField label="Status" value={draft.status} options={statuses} onChange={(v) => setDraft((p) => ({ ...p, status: v as SubscriptionRecord["status"] }))} />
               <SelectField label="Billing cycle" value={draft.billingCycle} options={billingCycles} onChange={(v) => setDraft((p) => ({ ...p, billingCycle: v as SubscriptionRecord["billingCycle"] }))} />
               <TextField label="Monthly cost" value={draft.monthlyCost.toString()} onChange={(v) => setDraft((p) => ({ ...p, monthlyCost: Number(v) || 0 }))} type="number" step="0.01" placeholder="15.00" />
-              <TextField label="Annual cost (optional)" value={(draft.annualCost ?? 0).toString()} onChange={(v) => setDraft((p) => ({ ...p, annualCost: Number(v) || 0 }))} type="number" step="0.01" placeholder="180.00" />
-              <TextField label="Start date" value={draft.startDate} onChange={(v) => setDraft((p) => ({ ...p, startDate: v }))} type="date" />
-              <TextField label="Renewal date" value={draft.renewalDate} onChange={(v) => setDraft((p) => ({ ...p, renewalDate: v }))} type="date" />
-              <TextField label="Usage (hrs, optional)" value={(draft.usage ?? 0).toString()} onChange={(v) => setDraft((p) => ({ ...p, usage: Number(v) || 0 }))} type="number" placeholder="0" />
               <TextField label="Notes (optional)" value={draft.notes ?? ""} onChange={(v) => setDraft((p) => ({ ...p, notes: v }))} placeholder="Family plan" />
             </div>
 
@@ -362,7 +437,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={handleAdd}
-                className="rounded-full bg-sky-600 px-6 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700"
+                className="rounded-full bg-sky-600 px-6 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-500/20"
               >
                 + Add subscription
               </button>
@@ -379,8 +454,6 @@ export default function Home() {
                       <th className="px-4 py-3">Billing</th>
                       <th className="px-4 py-3 text-right">Monthly</th>
                       <th className="px-4 py-3 text-right">Annual</th>
-                      <th className="px-4 py-3">Start</th>
-                      <th className="px-4 py-3">Renewal</th>
                       <th className="px-4 py-3"></th>
                     </tr>
                   </thead>
@@ -395,8 +468,6 @@ export default function Home() {
                         <td className="px-4 py-3 text-slate-600">{row.billingCycle}</td>
                         <td className="px-4 py-3 text-right font-medium text-slate-900">{currency.format(monthlyValue(row))}</td>
                         <td className="px-4 py-3 text-right text-slate-600">{currency.format(annualValue(row))}</td>
-                        <td className="px-4 py-3 text-slate-600">{row.startDate}</td>
-                        <td className="px-4 py-3 text-slate-600">{row.renewalDate}</td>
                         <td className="px-4 py-3 text-right">
                           <button
                             type="button"
@@ -424,7 +495,13 @@ export default function Home() {
 
         {step === 2 && (
           <>
-            {entries.length === 0 ? (
+            {loadingReport ? (
+              <div className="rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-12 text-center">
+                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-slate-300 border-t-sky-600"></div>
+                <p className="mt-4 text-lg font-medium text-slate-700">Loading report...</p>
+                <p className="mt-2 text-sm text-slate-600">Please wait while we fetch your subscription data</p>
+              </div>
+            ) : entries.length === 0 ? (
               <div className="rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-12 text-center">
                 <p className="text-lg font-medium text-slate-700">No data to visualize</p>
                 <p className="mt-2 text-sm text-slate-600">Go back and add subscriptions first</p>
@@ -433,7 +510,7 @@ export default function Home() {
                   onClick={() => setStep(1)}
                   className="mt-4 rounded-full bg-sky-600 px-6 py-2 text-sm font-semibold text-white hover:bg-sky-700"
                 >
-                  ← Back to Input
+                  Back to Input
                 </button>
               </div>
             ) : (
@@ -449,11 +526,9 @@ export default function Home() {
                   categoryFilter={categoryFilter}
                   cycleFilter={cycleFilter}
                   statusFilter={statusFilter}
-                  metric={metric}
                   onCategoryChange={setCategoryFilter}
                   onCycleChange={setCycleFilter}
                   onStatusChange={setStatusFilter}
-                  onMetricChange={setMetric}
                   recordCount={filtered.length}
                 />
 
@@ -471,16 +546,16 @@ export default function Home() {
                               : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
                           }`}
                         >
-                          {mode === "treemap" && "🗂️ Treemap"}
-                          {mode === "swarm" && "🎯 Swarm Plot"}
-                          {mode === "bubble" && "⚫ Bubble Chart"}
+                          {mode === "treemap" && "Treemap"}
+                          {mode === "swarm" && "Swarm Plot"}
+                          {mode === "bubble" && "Bubble Chart"}
                         </button>
                       ))}
                     </div>
                   </div>
 
                   <div className="rounded-xl bg-gradient-to-br from-slate-50 to-white p-4">
-                    {view === "treemap" && <TreemapView data={filtered} metric={metric} />}
+                    {view === "treemap" && <TreemapView data={filtered} />}
                     {view === "swarm" && <SwarmView data={filtered} />}
                     {view === "bubble" && <BubbleView data={filtered} />}
                   </div>
@@ -499,11 +574,14 @@ export default function Home() {
         <ShareExportModal
           onClose={() => setShareOpen(false)}
           view={view}
-          metric={metric}
           categoryFilter={categoryFilter}
           cycleFilter={cycleFilter}
           statusFilter={statusFilter}
           shareUrl={shareUrl}
+          reportId={reportId}
+          reportAuthor={reportAuthor}
+          onSaveReport={handleSaveReport}
+          savingReport={savingReport}
           onExportCSV={handleExportCSV}
           onExportJSON={handleExportJSON}
           onShareNative={handleShareNative}
@@ -551,36 +629,20 @@ type FiltersBarProps = {
   categoryFilter: string;
   cycleFilter: string;
   statusFilter: string;
-  metric: "count" | "revenue";
   onCategoryChange: (v: string) => void;
   onCycleChange: (v: string) => void;
   onStatusChange: (v: string) => void;
-  onMetricChange: (v: "count" | "revenue") => void;
   recordCount: number;
 };
 
-function FiltersBar({ categoryFilter, cycleFilter, statusFilter, metric, onCategoryChange, onCycleChange, onStatusChange, onMetricChange, recordCount }: FiltersBarProps) {
+function FiltersBar({ categoryFilter, cycleFilter, statusFilter, onCategoryChange, onCycleChange, onStatusChange, recordCount }: FiltersBarProps) {
   return (
-    <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+    <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-slate-200/60 bg-white/70 p-4 shadow-sm backdrop-blur">
       <Selector label="Category" value={categoryFilter} onChange={onCategoryChange} options={["All categories", ...categories]} />
       <Selector label="Billing" value={cycleFilter} onChange={onCycleChange} options={["All billing", ...billingCycles]} />
       <Selector label="Status" value={statusFilter} onChange={onStatusChange} options={["All statuses", ...statuses]} />
       <div className="ml-auto flex items-center gap-3">
         <span className="text-xs text-slate-500">{recordCount} record{recordCount !== 1 ? 's' : ''}</span>
-        <div className="h-6 w-px bg-slate-300"></div>
-        <span className="text-xs font-semibold uppercase text-slate-500">Metric</span>
-        <div className="flex rounded-lg border border-slate-200 bg-slate-50 p-1">
-          {(["revenue", "count"] as const).map((m) => (
-            <button
-              key={m}
-              type="button"
-              onClick={() => onMetricChange(m)}
-              className={`rounded-md px-3 py-1 text-xs font-semibold transition ${metric === m ? "bg-white text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-900"}`}
-            >
-              {m === "revenue" ? "💵 Cost" : "📊 Count"}
-            </button>
-          ))}
-        </div>
       </div>
     </div>
   );
@@ -594,7 +656,7 @@ function Selector({ label, value, options, onChange }: SelectorProps) {
       <select 
         value={value} 
         onChange={(e) => onChange(e.target.value)} 
-        className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200"
+        className="rounded-xl border border-slate-200/80 bg-white/80 px-3 py-2 text-sm text-slate-800 shadow-sm transition focus:border-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-500/10"
       >
         {options.map((opt) => (
           <option key={opt} value={opt}>
@@ -617,7 +679,7 @@ function TextField({ label, value, onChange, type = "text", step, placeholder }:
         type={type}
         step={step}
         placeholder={placeholder}
-        className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200"
+        className="rounded-xl border border-slate-200/80 bg-white/80 px-3 py-2 text-sm text-slate-800 shadow-sm transition placeholder:text-slate-400 focus:border-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-500/10"
       />
     </label>
   );
@@ -631,7 +693,7 @@ function SelectField({ label, value, options, onChange }: SelectFieldProps) {
       <select 
         value={value} 
         onChange={(e) => onChange(e.target.value)} 
-        className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 shadow-sm focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200"
+        className="rounded-xl border border-slate-200/80 bg-white/80 px-3 py-2 text-sm text-slate-800 shadow-sm transition focus:border-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-500/10"
       >
         {options.map((opt) => (
           <option key={opt} value={opt}>
@@ -648,84 +710,158 @@ function SelectField({ label, value, options, onChange }: SelectFieldProps) {
 type ShareExportModalProps = {
   onClose: () => void;
   view: ViewMode;
-  metric: "count" | "revenue";
   categoryFilter: string;
   cycleFilter: string;
   statusFilter: string;
   shareUrl: string;
+  reportId: string | null;
+  reportAuthor: string | null;
+  onSaveReport: (authorName: string) => Promise<string | null>;
+  savingReport: boolean;
   onExportCSV: () => void;
   onExportJSON: () => void;
   onShareNative: () => void;
   count: number;
 };
 
-function ShareExportModal({ onClose, view, metric, categoryFilter, cycleFilter, statusFilter, shareUrl, onExportCSV, onExportJSON, onShareNative, count }: ShareExportModalProps) {
+function ShareExportModal({ onClose, view, categoryFilter, cycleFilter, statusFilter, shareUrl, reportId, reportAuthor, onSaveReport, savingReport, onExportCSV, onExportJSON, onShareNative, count }: ShareExportModalProps) {
+  const [savedReportId, setSavedReportId] = useState<string | null>(reportId);
+  const [shareableUrl, setShareableUrl] = useState(shareUrl);
+  const [authorName, setAuthorName] = useState<string>("");
+
+  const handleSaveAndShare = async () => {
+    if (!authorName.trim()) {
+      alert("Please enter your name to save the report");
+      return;
+    }
+    const id = await onSaveReport(authorName.trim());
+    if (id) {
+      setSavedReportId(id);
+      const url = new URL(window.location.origin + window.location.pathname);
+      url.searchParams.set("reportId", id);
+      setShareableUrl(url.toString());
+    }
+  };
+
+  const displayUrl = savedReportId ? shareableUrl : shareUrl;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" onClick={onClose}>
-      <div className="w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" onClick={onClose}>
+      <div className="w-full max-w-2xl rounded-3xl border border-slate-200/70 bg-white/90 p-6 shadow-2xl backdrop-blur" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-start justify-between gap-4">
           <div>
             <h3 className="text-xl font-bold text-slate-900">Share & Export</h3>
             <p className="mt-1 text-sm text-slate-600">
-              View: <span className="font-medium">{view}</span> • Metric: <span className="font-medium">{metric}</span> • Records: <span className="font-medium">{count}</span>
+              View: <span className="font-medium">{view}</span> • Records: <span className="font-medium">{count}</span>
             </p>
           </div>
           <button 
             type="button" 
             onClick={onClose} 
-            className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            className="rounded-xl border border-slate-200 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-500/10"
           >
             Close
           </button>
         </div>
 
         <div className="mt-6 space-y-5">
-          {/* Share Link Section */}
-          <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
-            <p className="text-xs font-bold uppercase tracking-wide text-slate-600">📤 Share Link</p>
-            <div className="mt-3 rounded-lg border border-slate-200 bg-white p-3">
-              <p className="break-all text-sm text-slate-700">{shareUrl}</p>
-            </div>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <CopyButton value={shareUrl} />
-              <button 
-                type="button" 
-                onClick={onShareNative} 
-                className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+          {/* Save Report Section */}
+          {!savedReportId && (
+            <div className="rounded-2xl border border-sky-200/60 bg-sky-50/70 p-5">
+              <p className="text-xs font-bold uppercase tracking-wide text-sky-700">Save Report</p>
+              <p className="mt-2 text-sm text-slate-600">
+                Save your subscriptions and filters to generate a permanent shareable link. Anyone with the link can view your report.
+              </p>
+              <div className="mt-4">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Your Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={authorName}
+                  onChange={(e) => setAuthorName(e.target.value)}
+                  placeholder="Enter your name"
+                  className="w-full rounded-xl border border-slate-200/80 bg-white/80 px-3 py-2 text-sm text-slate-800 shadow-sm transition placeholder:text-slate-400 focus:border-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-500/10"
+                />
+                <p className="mt-1 text-xs text-slate-500">Your name will be displayed when others view this report</p>
+              </div>
+              <button
+                type="button"
+                onClick={handleSaveAndShare}
+                disabled={savingReport || !authorName.trim()}
+                className="mt-4 rounded-xl bg-sky-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-500/20 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                📱 Native Share
+                {savingReport ? "Saving..." : "Save Report & Generate Link"}
               </button>
             </div>
+          )}
+
+          {/* Share Link Section */}
+          <div className="rounded-2xl border border-slate-200/70 bg-slate-50/70 p-5">
+            <p className="text-xs font-bold uppercase tracking-wide text-slate-600">
+              {savedReportId ? "Shareable Link" : "Sharing"}
+            </p>
+            {!savedReportId ? (
+              <p className="mt-2 text-sm text-slate-600">
+                Save the report to generate a shareable link that works in a new tab or on another device.
+              </p>
+            ) : (
+              <>
+                {reportAuthor && (
+                  <p className="mt-1 text-xs text-slate-600">
+                    Report by <span className="font-semibold">{reportAuthor}</span>
+                  </p>
+                )}
+                <p className="mt-1 text-xs text-green-600">
+                  Report saved. This link will work for anyone with access to it.
+                </p>
+                <div className="mt-3 rounded-xl border border-slate-200/70 bg-white/80 p-3">
+                  <p className="break-all text-sm text-slate-700">{displayUrl}</p>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <CopyButton value={displayUrl} />
+                  <button
+                    type="button"
+                    onClick={onShareNative}
+                    className="rounded-xl border border-slate-200 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-500/10"
+                  >
+                    Native Share
+                  </button>
+                </div>
+              </>
+            )}
           </div>
 
-          {/* Social Media Share */}
-          <div className="rounded-xl border border-slate-200 bg-white p-5">
-            <p className="text-xs font-bold uppercase tracking-wide text-slate-600">🌐 Social Media</p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <SocialButton label="LinkedIn" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`} />
-              <SocialButton label="X / Twitter" href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent('Check out my subscription analytics!')}`} />
-              <SocialButton label="Facebook" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} />
-              <SocialButton label="Reddit" href={`https://reddit.com/submit?url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent('My Subscription Analytics')}`} />
+          {/* Social Media Share (only when report is saved) */}
+          {savedReportId && (
+            <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-5">
+              <p className="text-xs font-bold uppercase tracking-wide text-slate-600">Social Media</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <SocialButton label="LinkedIn" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(displayUrl)}`} />
+                <SocialButton label="X / Twitter" href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(displayUrl)}&text=${encodeURIComponent('Check out my subscription analytics!')}`} />
+                <SocialButton label="Facebook" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(displayUrl)}`} />
+                <SocialButton label="Reddit" href={`https://reddit.com/submit?url=${encodeURIComponent(displayUrl)}&title=${encodeURIComponent('My Subscription Analytics')}`} />
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Export Data */}
-          <div className="rounded-xl border border-slate-200 bg-white p-5">
-            <p className="text-xs font-bold uppercase tracking-wide text-slate-600">💾 Export Data</p>
+          <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-5">
+            <p className="text-xs font-bold uppercase tracking-wide text-slate-600">Export Data</p>
             <div className="mt-4 flex flex-wrap gap-2">
               <button 
                 type="button" 
                 onClick={onExportCSV} 
-                className="rounded-lg bg-sky-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-sky-700"
+                className="rounded-xl bg-sky-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-500/20"
               >
-                📊 Download CSV
+                Download CSV
               </button>
               <button 
                 type="button" 
                 onClick={onExportJSON} 
-                className="rounded-lg bg-slate-800 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-900"
+                className="rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-950 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-500/20"
               >
-                📄 Download JSON
+                Download JSON
               </button>
             </div>
             <p className="mt-3 text-xs text-slate-500">
@@ -745,7 +881,7 @@ function CopyButton({ value }: { value: string }) {
   return (
     <button
       type="button"
-      className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+      className="rounded-xl border border-slate-200 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-500/10"
       onClick={async () => {
         try {
           await navigator.clipboard.writeText(value);
@@ -756,7 +892,7 @@ function CopyButton({ value }: { value: string }) {
         }
       }}
     >
-      {copied ? "✓ Copied!" : "📋 Copy Link"}
+      {copied ? "Copied!" : "Copy Link"}
     </button>
   );
 }
@@ -764,7 +900,7 @@ function CopyButton({ value }: { value: string }) {
 function SocialButton({ label, href }: { label: string; href: string }) {
   return (
     <a
-      className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+      className="rounded-xl border border-slate-200 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-white"
       href={href}
       target="_blank"
       rel="noreferrer"

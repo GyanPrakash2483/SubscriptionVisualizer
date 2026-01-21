@@ -10,10 +10,6 @@ type SubscriptionRecord = {
   status: string;
   billingCycle: string;
   monthlyCost: number;
-  annualCost?: number;
-  startDate: string;
-  renewalDate: string;
-  usage?: number;
   notes?: string;
 };
 
@@ -29,14 +25,14 @@ const currency = new Intl.NumberFormat("en-US", {
 
 function monthlyValue(item: SubscriptionRecord) {
   if (item.billingCycle === "Annual") {
-    return (item.annualCost ?? item.monthlyCost * 12) / 12;
+    return item.monthlyCost / 12;
   }
   return item.monthlyCost;
 }
 
 function annualValue(item: SubscriptionRecord) {
   if (item.billingCycle === "Annual") {
-    return item.annualCost ?? item.monthlyCost * 12;
+    return item.monthlyCost;
   }
   return item.monthlyCost * 12;
 }
@@ -93,8 +89,7 @@ export default function SwarmView({ data }: SwarmViewProps) {
       monthly: monthlyValue(item),
       annual: annualValue(item),
       billing: item.billingCycle,
-      usage: item.usage || 0,
-      volume: Math.min(item.usage || 10, 100), // For size scaling
+      volume: 50, // Fixed size for all items
       color: colorMap[item.serviceName],
     }));
 
@@ -124,7 +119,7 @@ export default function SwarmView({ data }: SwarmViewProps) {
           <span className="text-slate-400">•</span>
           <span className="text-slate-500">Y = Category</span>
           <span className="text-slate-400">•</span>
-          <span className="text-slate-500">Size = Usage</span>
+          <span className="text-slate-500">Size = Revenue</span>
         </div>
       </div>
       <div className="h-[600px] overflow-hidden rounded-xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-6 shadow-sm">
@@ -214,12 +209,6 @@ export default function SwarmView({ data }: SwarmViewProps) {
                   <span className="text-slate-500">Billing:</span>
                   <span className="font-medium">{node.data.billing}</span>
                 </div>
-                {node.data.usage > 0 && (
-                  <div className="flex justify-between gap-4">
-                    <span className="text-slate-500">Usage:</span>
-                    <span className="font-semibold text-sky-600">{node.data.usage}h/month</span>
-                  </div>
-                )}
               </div>
             </div>
           )}

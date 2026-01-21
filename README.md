@@ -2,24 +2,23 @@
 
 A powerful web application for visualizing subscription data through interactive **treemaps**, **swarm plots**, and **bubble charts**. Built with Next.js 16, React 19, and professional visualization library Nivo. Explore subscription patterns, identify trends, detect anomalies, and understand relationships across multiple dimensions.
 
-## ✨ Features
+## Features
 
-### 📊 Professional Visualizations
+### Professional Visualizations
 
-- **🗂️ Hierarchical Treemap**: Space-filling layout showing subscriptions grouped by category, sized by revenue or count
-- **🎯 Swarm Distribution Plot**: Individual data points showing cost distribution across categories with force-based collision detection
-- **⚫ Circle Packing**: Nested bubble chart displaying hierarchical relationships between categories and subscriptions
+- **Hierarchical Treemap**: Space-filling layout showing subscriptions grouped by category, sized by cost
+- **Swarm Distribution Plot**: Individual data points showing cost distribution across categories with force-based collision detection
+- **Circle Packing**: Nested bubble chart displaying hierarchical relationships between categories and subscriptions
 
-### 🎨 Interactive Features
+### Interactive Features
 
 - **Real-time filtering**: Filter by category, billing cycle, and status
-- **Metric toggle**: Switch between count and revenue views
 - **Rich tooltips**: Detailed information on hover with formatted data
 - **Smooth animations**: Professional transitions using Nivo's motion system
 - **Responsive design**: Optimized for desktop, tablet, and mobile
 - **Color-coded legends**: Visual guides for status and categories
 
-### 📤 Export & Sharing
+### Export & Sharing
 
 - **CSV Export**: Download filtered subscription data
 - **JSON Export**: Export data in JSON format
@@ -27,14 +26,14 @@ A powerful web application for visualizing subscription data through interactive
 - **Native Share API**: Use device's built-in sharing on mobile
 - **URL State Persistence**: Shareable links preserve filters and view state
 
-### 📈 Analytics Dashboard
+### Analytics Dashboard
 
 - **Monthly Spend**: Total monthly cost with annual plan prorating
 - **Annual Spend**: Total annualized subscription costs
 - **Active vs Cancelled**: Current subscription status breakdown
 - **Average Cost**: Per-subscription average monthly cost
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -61,7 +60,7 @@ pnpm dev
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 subscription_visualizer/
@@ -79,7 +78,7 @@ subscription_visualizer/
 └── package.json               # Dependencies and scripts
 ```
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **Framework**: [Next.js 16](https://nextjs.org) with App Router
 - **UI Library**: React 19 with React Compiler
@@ -89,13 +88,13 @@ subscription_visualizer/
 - **Build Tool**: Turbopack (Next.js 16 default)
 - **Package Manager**: pnpm
 
-## 📊 Visualization Details
+## Visualization Details
 
 ### Treemap
 - **Layout Algorithm**: Squarify algorithm for optimal space utilization
-- **Hierarchy**: Two levels (categories → subscriptions)
+- **Hierarchy**: Two levels (categories to subscriptions)
 - **Color Coding**: Status-based coloring (Active=green, Cancelled=red, Paused=amber, Trial=blue)
-- **Sizing**: Proportional to monthly cost or count
+- **Sizing**: Proportional to monthly cost
 - **Interactions**: Hover tooltips with detailed metrics
 
 ### Swarm Plot
@@ -108,13 +107,13 @@ subscription_visualizer/
 
 ### Circle Packing (Bubble Chart)
 - **Layout**: Hierarchical circle packing with nesting
-- **Hierarchy**: Two levels (categories → subscriptions)
+- **Hierarchy**: Two levels (categories to subscriptions)
 - **Color Scheme**: Category-based gradient colors
 - **Sizing**: Bubble area proportional to annual cost
 - **Background**: Dark gradient for visual contrast
 - **Interactions**: Rich tooltips showing aggregated metrics
 
-## 📝 Data Model
+## Data Model
 
 Each subscription includes:
 - Service name and category
@@ -124,7 +123,7 @@ Each subscription includes:
 - Start and renewal dates
 - Optional usage metrics and notes
 
-## 🎯 Usage
+## Usage
 
 1. **Step 1 - Add Subscriptions**
    - Manually enter subscription details
@@ -134,10 +133,9 @@ Each subscription includes:
 2. **Step 2 - Analyze Data**
    - Switch between visualization types
    - Apply filters to focus on specific data
-   - Toggle between count and revenue metrics
    - Export or share insights
 
-## 🔧 Development
+## Development
 
 ### Available Scripts
 
@@ -153,14 +151,14 @@ Each subscription includes:
 - Tailwind CSS v4 with native CSS layers
 - Component-based architecture with dynamic imports
 
-## 📚 References & Inspiration
+## References & Inspiration
 
 This project draws inspiration from:
 - [visualize.nguyenvu.dev](https://visualize.nguyenvu.dev/) - Data visualization patterns
 - [vexly.app/demo](https://vexly.app/demo) - Subscription management UX
 - [Nivo](https://nivo.rocks) - Professional visualization components
 
-## 🎨 Design Philosophy
+## Design Philosophy
 
 - **Professional & Beautiful**: Using Nivo's polished components for production-quality visualizations
 - **Responsive**: Mobile-first design that scales elegantly
@@ -168,15 +166,15 @@ This project draws inspiration from:
 - **Performance**: Dynamic imports and optimized rendering
 - **User-Centric**: Intuitive interactions with helpful tooltips
 
-## 📄 License
+## License
 
 This project is open source and available for educational and commercial use.
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please read the [specifications document](./specifications.md) to understand the project requirements before contributing.
 
-## 💡 Future Enhancements
+## Future Enhancements
 
 - Real-time data sync
 - Advanced analytics overlays
@@ -188,4 +186,4 @@ Contributions are welcome! Please read the [specifications document](./specifica
 
 ---
 
-Built with ❤️ using Next.js 16, React 19, Tailwind CSS v4, and Nivo
+Built with Next.js 16, React 19, Tailwind CSS v4, and Nivo
