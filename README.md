@@ -1,12 +1,12 @@
 # Subscription Visualizer
 
-A powerful web application for visualizing subscription data through interactive **treemaps**, **swarm plots**, and **bubble charts**. Built with Next.js 16, React 19, and professional visualization library Nivo. Explore subscription patterns, identify trends, detect anomalies, and understand relationships across multiple dimensions.
+A web app for entering subscription records and visualizing **subscription costs** with three interactive views: a **treemap** (D3), a **swarm plot** (Nivo), and a **circle packing** chart (Nivo). Includes filtering, CSV/JSON export, and optional MongoDB-backed saved reports for sharing.
 
 ## Features
 
 ### Professional Visualizations
 
-- **Hierarchical Treemap**: Space-filling layout showing subscriptions grouped by category, sized by cost
+- **Treemap**: Space-filling layout showing subscriptions sized by monthly cost
 - **Swarm Distribution Plot**: Individual data points showing cost distribution across categories with force-based collision detection
 - **Circle Packing**: Nested bubble chart displaying hierarchical relationships between categories and subscriptions
 
@@ -14,7 +14,7 @@ A powerful web application for visualizing subscription data through interactive
 
 - **Real-time filtering**: Filter by category, billing cycle, and status
 - **Rich tooltips**: Detailed information on hover with formatted data
-- **Smooth animations**: Professional transitions using Nivo's motion system
+- **Smooth animations**: Transitions for Nivo-based charts (swarm + circle packing)
 - **Responsive design**: Optimized for desktop, tablet, and mobile
 - **Color-coded legends**: Visual guides for status and categories
 
@@ -22,9 +22,10 @@ A powerful web application for visualizing subscription data through interactive
 
 - **CSV Export**: Download filtered subscription data
 - **JSON Export**: Export data in JSON format
-- **Social Sharing**: Share to LinkedIn, Twitter, Facebook, Reddit
+- **Saved report links (optional)**: Save to MongoDB to generate a shareable link others can open
+- **Social Sharing**: Share saved report links to LinkedIn, X/Twitter, Facebook, Reddit
 - **Native Share API**: Use device's built-in sharing on mobile
-- **URL State Persistence**: Shareable links preserve filters and view state
+- **URL State**: View + filters are reflected in the URL; saved reports use `reportId`
 
 ### Analytics Dashboard
 
@@ -69,10 +70,12 @@ subscription_visualizer/
 │   │   ├── page.tsx           # Main application page
 │   │   ├── layout.tsx         # Root layout with fonts
 │   │   └── globals.css        # Global styles with Tailwind v4
+│   │   └── api/reports/route.ts # Save/load shared reports (MongoDB)
 │   └── components/            # Visualization components
-│       ├── TreemapView.tsx    # Nivo treemap visualization
+│       ├── TreemapView.tsx    # D3 treemap visualization
 │       ├── SwarmView.tsx      # Nivo swarm plot visualization
 │       └── BubbleView.tsx     # Nivo circle packing visualization
+│   └── lib/mongodb.ts         # MongoDB connection helper
 ├── public/                     # Static assets
 ├── specifications.md           # Detailed project specifications
 └── package.json               # Dependencies and scripts
@@ -92,8 +95,8 @@ subscription_visualizer/
 
 ### Treemap
 - **Layout Algorithm**: Squarify algorithm for optimal space utilization
-- **Hierarchy**: Two levels (categories to subscriptions)
-- **Color Coding**: Status-based coloring (Active=green, Cancelled=red, Paused=amber, Trial=blue)
+- **Hierarchy**: Flat layout (one rectangle per subscription record)
+- **Color Coding**: Brand-colored tiles with status badge/legend
 - **Sizing**: Proportional to monthly cost
 - **Interactions**: Hover tooltips with detailed metrics
 
@@ -101,8 +104,8 @@ subscription_visualizer/
 - **Distribution**: Force-directed simulation for collision-free positioning
 - **X-axis**: Monthly cost (linear scale)
 - **Y-axis**: Categories (ordinal scale)
-- **Size Encoding**: Circle size represents usage hours
-- **Color Coding**: Status-based coloring
+- **Size Encoding**: Fixed point size (each circle represents one subscription)
+- **Color Coding**: Brand-colored points; status shown in tooltip
 - **Grid**: Dashed gridlines for cost reference
 
 ### Circle Packing (Bubble Chart)
@@ -119,9 +122,8 @@ Each subscription includes:
 - Service name and category
 - Status (Active, Cancelled, Paused, Trial)
 - Billing cycle (Monthly, Annual)
-- Cost information (monthly and annual)
-- Start and renewal dates
-- Optional usage metrics and notes
+- Cost (a single numeric amount stored in `monthlyCost`)
+- Optional notes
 
 ## Usage
 
@@ -160,10 +162,10 @@ This project draws inspiration from:
 
 ## Design Philosophy
 
-- **Professional & Beautiful**: Using Nivo's polished components for production-quality visualizations
+- **Professional & Beautiful**: Polished charts (Nivo) plus a custom D3 treemap
 - **Responsive**: Mobile-first design that scales elegantly
-- **Accessible**: Proper ARIA labels and keyboard navigation
-- **Performance**: Dynamic imports and optimized rendering
+- **Accessible**: Semantic HTML, visible focus styles, and usable contrast
+- **Performance**: Dynamic imports for chart components
 - **User-Centric**: Intuitive interactions with helpful tooltips
 
 ## License
@@ -173,17 +175,5 @@ This project is open source and available for educational and commercial use.
 ## Contributing
 
 Contributions are welcome! Please read the [specifications document](./specifications.md) to understand the project requirements before contributing.
-
-## Future Enhancements
-
-- Real-time data sync
-- Advanced analytics overlays
-- Custom color palette editor
-- Saved visualization presets
-- PDF report generation
-- Multi-user collaboration
-- API integration for external data sources
-
----
 
 Built with Next.js 16, React 19, Tailwind CSS v4, and Nivo
