@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
-import { Github } from "lucide-react";
+import { Github, Moon, Sun, Monitor } from "lucide-react";
 
 type SubscriptionRecord = {
   id: string;
@@ -122,6 +122,7 @@ export default function Home() {
   const [savingReport, setSavingReport] = useState(false);
   const [loadingReport, setLoadingReport] = useState(false);
   const [reportAuthor, setReportAuthor] = useState<string | null>(null);
+  const [theme, setTheme] = useState<"system" | "light" | "dark">("system");
   const [draft, setDraft] = useState<Omit<SubscriptionRecord, "id">>({
     serviceName: "",
     category: "Streaming",
@@ -130,6 +131,38 @@ export default function Home() {
     monthlyCost: 15,
     notes: "",
   });
+
+  // Initialize theme from localStorage
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") as "system" | "light" | "dark" | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
+  }, []);
+
+  // Apply theme to document
+  useEffect(() => {
+    const root = document.documentElement;
+    
+    if (theme === "system") {
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      root.classList.toggle("dark", prefersDark);
+      root.classList.toggle("light", !prefersDark);
+    } else {
+      root.classList.toggle("dark", theme === "dark");
+      root.classList.toggle("light", theme === "light");
+    }
+    
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const cycleTheme = () => {
+    setTheme(prev => {
+      if (prev === "system") return "light";
+      if (prev === "light") return "dark";
+      return "system";
+    });
+  };
 
   // Load report from MongoDB if reportId is in URL
   useEffect(() => {
@@ -363,52 +396,101 @@ export default function Home() {
   }
 
   return (
-    <main className="relative min-h-screen px-4 py-8 text-slate-100 md:px-6 md:py-10">
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-6">
-        <header className="glass-strong rounded-2xl p-6 shadow-xl">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <div className="mb-2 flex items-center gap-3">
-                <div className="h-10 w-1 rounded-full bg-gradient-to-b from-blue-500 via-purple-500 to-pink-500"></div>
-                <p className="text-xs font-bold uppercase tracking-wider text-blue-400">Subscription Visualizer</p>
+    <div className="relative min-h-screen text-slate-100">
+      {/* Header */}
+      <header className="glass-strong relative z-20 border-b border-slate-700/50 shadow-xl">
+        <div className="mx-auto max-w-7xl px-4 py-4 md:px-6 md:py-5">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 shadow-lg">
+                <svg className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
               </div>
-              <h1 className="bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-2xl font-bold text-transparent md:text-3xl">
-                {reportAuthor ? `Report by ${reportAuthor}` : "Manage & visualize subscriptions"}
-              </h1>
-              <p className="mt-1 text-sm text-slate-400">
-                {reportAuthor ? `Shared subscription report • ${entries.length} subscription${entries.length !== 1 ? 's' : ''}` : `Step ${step} of 2 • ${entries.length} subscription${entries.length !== 1 ? 's' : ''}`}
-              </p>
+              <div>
+                <h1 className="bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-xl font-bold text-transparent md:text-2xl">
+                  Subscription Visualizer
+                </h1>
+                <p className="text-xs text-slate-400">
+                  {reportAuthor ? `Report by ${reportAuthor}` : "Track where your money goes"}
+                </p>
+              </div>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={() => {
-                  if (step === 1 && entries.length === 0) return;
-                  setStep((prev) => (prev === 1 ? 2 : 1));
-                }}
-                className="btn-primary glow-hover rounded-xl px-6 py-3 text-sm font-bold text-white transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-50"
-                disabled={step === 1 && entries.length === 0}
+                onClick={cycleTheme}
+                className="flex items-center gap-2 rounded-xl border border-slate-600/50 bg-slate-700/40 px-3 py-2 text-sm font-semibold text-slate-200 shadow-lg backdrop-blur-sm transition hover:border-slate-500/70 hover:bg-slate-600/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-500/30"
+                aria-label="Toggle theme"
+                title={`Theme: ${theme}`}
               >
-                {step === 1 ? "View Analytics →" : "← Back to Input"}
+                {theme === "system" && <Monitor size={18} />}
+                {theme === "light" && <Sun size={18} />}
+                {theme === "dark" && <Moon size={18} />}
+                <span className="hidden sm:inline text-xs">
+                  {theme === "system" ? "Auto" : theme === "light" ? "Light" : "Dark"}
+                </span>
               </button>
-              <button
-                type="button"
-                onClick={() => setShareOpen(true)}
-                className="rounded-xl border border-slate-600/50 bg-slate-700/40 px-6 py-3 text-sm font-bold text-slate-100 shadow-lg backdrop-blur-sm transition hover:border-slate-500/70 hover:bg-slate-600/50 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-500/30 disabled:cursor-not-allowed disabled:opacity-50"
-                disabled={entries.length === 0}
+              <a
+                href="https://github.com/GyanPrakash2483/SubscriptionVisualizer"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 rounded-xl border border-slate-600/50 bg-slate-700/40 px-4 py-2 text-sm font-semibold text-slate-200 shadow-lg backdrop-blur-sm transition hover:border-slate-500/70 hover:bg-slate-600/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-500/30"
+                aria-label="View source on GitHub"
               >
-                Share / Export
-              </button>
+                <Github size={18} />
+                <span className="hidden sm:inline">Source</span>
+              </a>
             </div>
           </div>
-        </header>
+        </div>
+      </header>
+
+      <main className="relative px-4 py-8 md:px-6 md:py-10">
+        <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-6">
+          <div className="glass-strong rounded-2xl p-6 shadow-xl">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <div className="mb-2 flex items-center gap-3">
+                  <div className="h-8 w-1 rounded-full bg-gradient-to-b from-blue-500 via-purple-500 to-pink-500"></div>
+                  <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                    {reportAuthor ? `Shared Report • ${entries.length} subscription${entries.length !== 1 ? 's' : ''}` : `Step ${step} of 2 • ${entries.length} subscription${entries.length !== 1 ? 's' : ''}`}
+                  </p>
+                </div>
+                <h2 className="text-xl font-bold text-slate-100 md:text-2xl">
+                  {reportAuthor ? `${reportAuthor}'s Subscriptions` : step === 1 ? "Your Subscriptions" : "Overview"}
+                </h2>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (step === 1 && entries.length === 0) return;
+                    setStep((prev) => (prev === 1 ? 2 : 1));
+                  }}
+                  className="btn-primary glow-hover rounded-xl px-6 py-3 text-sm font-bold text-white transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-50"
+                  disabled={step === 1 && entries.length === 0}
+                >
+                  {step === 1 ? "View Analytics →" : "← Back to Input"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShareOpen(true)}
+                  className="rounded-xl border border-slate-600/50 bg-slate-700/40 px-6 py-3 text-sm font-bold text-slate-100 shadow-lg backdrop-blur-sm transition hover:border-slate-500/70 hover:bg-slate-600/50 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-500/30 disabled:cursor-not-allowed disabled:opacity-50"
+                  disabled={entries.length === 0}
+                >
+                  Share / Export
+                </button>
+              </div>
+            </div>
+          </div>
 
         {step === 1 && (
           <section className="glass-strong grid gap-4 rounded-2xl p-6 shadow-xl">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <h2 className="text-xl font-semibold text-slate-100">Enter your subscriptions</h2>
-                <p className="text-sm text-slate-400">Add your records or load sample data to preview analytics.</p>
+                <h2 className="text-xl font-semibold text-slate-100">Your Subscriptions</h2>
+                <p className="text-sm text-slate-400">Add what you pay for monthly or yearly.</p>
               </div>
               <div className="flex flex-wrap gap-2">
                 <button
@@ -416,7 +498,7 @@ export default function Home() {
                   onClick={() => setEntries(sampleData)}
                   className="glass rounded-xl px-4 py-2 text-sm font-semibold text-slate-200 shadow-lg transition hover:bg-slate-700/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-500/20"
                 >
-                  Load sample data
+                  Try with examples
                 </button>
                 {entries.length > 0 && (
                   <button
@@ -488,8 +570,8 @@ export default function Home() {
 
             {entries.length === 0 && (
               <div className="glass rounded-xl border-2 border-dashed border-slate-600/30 p-8 text-center">
-                <p className="text-sm font-medium text-slate-300">No subscriptions yet</p>
-                <p className="mt-1 text-xs text-slate-500">Add your first subscription or load sample data to get started</p>
+                <p className="text-sm font-medium text-slate-300">Nothing here yet</p>
+                <p className="mt-1 text-xs text-slate-500">Add your subscriptions or try the examples</p>
               </div>
             )}
           </section>
@@ -500,19 +582,19 @@ export default function Home() {
             {loadingReport ? (
               <div className="glass-strong rounded-2xl border-2 border-dashed border-slate-600/30 p-12 text-center">
                 <div className="glow inline-block h-8 w-8 animate-spin rounded-full border-4 border-slate-600 border-t-blue-500"></div>
-                <p className="mt-4 text-lg font-medium text-slate-200">Loading report...</p>
-                <p className="mt-2 text-sm text-slate-400">Please wait while we fetch your subscription data</p>
+                <p className="mt-4 text-lg font-medium text-slate-200">Loading...</p>
+                <p className="mt-2 text-sm text-slate-400">Fetching your data</p>
               </div>
             ) : entries.length === 0 ? (
               <div className="glass-strong rounded-2xl border-2 border-dashed border-slate-600/30 p-12 text-center">
-                <p className="text-lg font-medium text-slate-200">No data to visualize</p>
-                <p className="mt-2 text-sm text-slate-400">Go back and add subscriptions first</p>
+                <p className="text-lg font-medium text-slate-200">Nothing to show yet</p>
+                <p className="mt-2 text-sm text-slate-400">Add some subscriptions first</p>
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="glow-hover mt-4 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-2.5 text-sm font-semibold text-white hover:from-blue-500 hover:to-purple-500"
+                  className="btn-primary glow-hover mt-4 rounded-xl px-6 py-2.5 text-sm font-semibold text-white"
                 >
-                  Back to Input
+                  Add Subscriptions
                 </button>
               </div>
             ) : (
@@ -566,33 +648,60 @@ export default function Home() {
             )}
           </>
         )}
+        </div>
+      </main>
 
-        <footer className="glass-strong mt-8 rounded-2xl border-t border-slate-700/50 p-6 text-center text-xs text-slate-400">
-          <p>Built with Next.js 16, React 19, and Tailwind CSS v4</p>
-          <p className="mt-1">
-            Made with{' '}
-            <a
-              href="https://kombai.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text font-semibold text-transparent transition hover:from-blue-300 hover:to-purple-300"
-            >
-              Kombai
-            </a>
-          </p>
-          <a
-            href="https://github.com/GyanPrakash2483/SubscriptionVisualizer"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 inline-flex items-center gap-1.5 text-slate-500 transition hover:text-slate-300"
-            aria-label="View source on GitHub"
-          >
-            <Github size={14} />
-            <span>View Source</span>
-          </a>
-          <p className="mt-2 text-slate-600">© 2026 gyanprakash2483@gmail.com</p>
-        </footer>
-      </div>
+      {/* Footer */}
+      <footer className="glass-strong relative z-20 border-t border-slate-700/50 mt-12">
+        <div className="mx-auto max-w-7xl px-4 py-8 md:px-6">
+          <div className="grid gap-8 md:grid-cols-3">
+            {/* About */}
+            <div>
+              <h3 className="mb-3 text-sm font-bold text-slate-300">What is this?</h3>
+              <p className="text-xs leading-relaxed text-slate-400">
+                Got too many subscriptions? Me too. This helps you see where all that money is actually going each month. No fancy stuff, just charts.
+              </p>
+            </div>
+
+            {/* Stack */}
+            <div>
+              <h3 className="mb-3 text-sm font-bold text-slate-300">Tech</h3>
+              <p className="text-xs leading-relaxed text-slate-400">
+                Built with Next.js 16, React 19, Tailwind v4, D3.js, and MongoDB. Made with{' '}
+                <a
+                  href="https://kombai.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-400 hover:text-blue-300 transition"
+                >
+                  Kombai
+                </a>.
+              </p>
+            </div>
+
+            {/* Links */}
+            <div>
+              <h3 className="mb-3 text-sm font-bold text-slate-300">Links</h3>
+              <a
+                href="https://github.com/GyanPrakash2483/SubscriptionVisualizer"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-xs text-slate-400 transition hover:text-slate-200"
+              >
+                <Github size={14} />
+                <span>Source code on GitHub</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Copyright */}
+          <div className="mt-8 border-t border-slate-700/50 pt-6 text-center">
+            <p className="text-xs text-slate-500">
+              © 2026 gyanprakash2483@gmail.com • All rights reserved
+            </p>
+          </div>
+        </div>
+      </footer>
 
       {shareOpen && (
         <ShareExportModal
@@ -612,7 +721,7 @@ export default function Home() {
           count={filtered.length}
         />
       )}
-    </main>
+    </div>
   );
 }
 

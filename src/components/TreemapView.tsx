@@ -460,10 +460,10 @@ export default function TreemapView({ data }: TreemapViewProps) {
 
   if (data.length === 0) {
     return (
-      <div className="flex h-[600px] items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50">
+      <div className="flex h-[600px] items-center justify-center rounded-xl border-2 border-dashed border-slate-600/30 glass">
         <div className="text-center">
-          <p className="text-lg font-medium text-slate-600">No data available</p>
-          <p className="mt-1 text-sm text-slate-500">Add subscriptions to view the treemap</p>
+          <p className="text-lg font-medium text-slate-300">Nothing here</p>
+          <p className="mt-1 text-sm text-slate-400">Add some subscriptions first</p>
         </div>
       </div>
     );
@@ -473,9 +473,9 @@ export default function TreemapView({ data }: TreemapViewProps) {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-bold text-slate-100">Subscription Treemap</h3>
+          <h3 className="text-lg font-bold text-slate-100">Treemap View</h3>
           <p className="text-sm text-slate-400">
-            {data.length} subscription{data.length !== 1 ? 's' : ''} • Total: {currency.format(totalValue)}/month
+            {data.length} subscription{data.length !== 1 ? 's' : ''} • {currency.format(totalValue)}/mo
           </p>
         </div>
       </div>

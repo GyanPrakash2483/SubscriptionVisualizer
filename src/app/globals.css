@@ -24,9 +24,17 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
+    transition: background 0.3s ease, color 0.3s ease;
   }
 
-  /* Animated background gradient */
+  /* Light mode */
+  html.light body,
+  .light body {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    color: #0f172a;
+  }
+
+  /* Animated background gradient - Dark */
   body::before {
     content: "";
     position: fixed;
@@ -39,6 +47,15 @@
                 radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
     pointer-events: none;
     z-index: 0;
+    transition: background 0.3s ease;
+  }
+
+  /* Animated background gradient - Light */
+  html.light body::before,
+  .light body::before {
+    background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.04) 0%, transparent 50%);
   }
 
   input[type="number"]::-webkit-inner-spin-button,
@@ -57,12 +74,13 @@
     scrollbar-width: none;
   }
 
-  /* Glass morphism utility */
+  /* Glass morphism utility - Dark */
   .glass {
     background: rgba(30, 41, 59, 0.5);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(148, 163, 184, 0.15);
+    transition: background 0.3s ease, border 0.3s ease;
   }
 
   .glass-strong {
@@ -70,6 +88,20 @@
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(148, 163, 184, 0.2);
+    transition: background 0.3s ease, border 0.3s ease;
+  }
+
+  /* Glass morphism utility - Light */
+  html.light .glass,
+  .light .glass {
+    background: rgba(255, 255, 255, 0.6) !important;
+    border: 1px solid rgba(203, 213, 225, 0.4) !important;
+  }
+
+  html.light .glass-strong,
+  .light .glass-strong {
+    background: rgba(255, 255, 255, 0.8) !important;
+    border: 1px solid rgba(203, 213, 225, 0.5) !important;
   }
 
   /* Glow effects */
@@ -104,7 +136,7 @@
     transform: translateY(-2px);
   }
 
-  /* Input enhancements */
+  /* Input enhancements - Dark */
   .input-enhanced {
     background: rgba(30, 41, 59, 0.6);
     border: 1.5px solid rgba(148, 163, 184, 0.2);
@@ -117,5 +149,198 @@
     border-color: rgba(59, 130, 246, 0.5);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15),
                 inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Input enhancements - Light */
+  html.light .input-enhanced,
+  .light .input-enhanced {
+    background: rgba(255, 255, 255, 0.8) !important;
+    border: 1.5px solid rgba(148, 163, 184, 0.3) !important;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+    color: #0f172a !important;
+  }
+
+  html.light .input-enhanced:focus,
+  .light .input-enhanced:focus {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-color: rgba(59, 130, 246, 0.6) !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1),
+                inset 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  /* Light mode text colors */
+  html.light .text-slate-100,
+  .light .text-slate-100 {
+    color: #0f172a !important;
+  }
+
+  html.light .text-slate-200,
+  .light .text-slate-200 {
+    color: #1e293b !important;
+  }
+
+  html.light .text-slate-300,
+  .light .text-slate-300 {
+    color: #334155 !important;
+  }
+
+  html.light .text-slate-400,
+  .light .text-slate-400 {
+    color: #475569 !important;
+  }
+
+  html.light .text-slate-500,
+  .light .text-slate-500 {
+    color: #64748b !important;
+  }
+
+  html.light .text-slate-600,
+  .light .text-slate-600 {
+    color: #334155 !important;
+  }
+
+  /* Light mode borders */
+  html.light .border-slate-600\/50,
+  html.light .border-slate-600\/30,
+  .light .border-slate-600\/50,
+  .light .border-slate-600\/30 {
+    border-color: rgba(100, 116, 139, 0.4) !important;
+  }
+
+  html.light .border-slate-700\/50,
+  html.light .border-slate-700\/30,
+  .light .border-slate-700\/50,
+  .light .border-slate-700\/30 {
+    border-color: rgba(148, 163, 184, 0.5) !important;
+  }
+
+  /* Light mode backgrounds */
+  html.light .bg-slate-700\/40,
+  html.light .bg-slate-700\/30,
+  .light .bg-slate-700\/40,
+  .light .bg-slate-700\/30 {
+    background-color: rgba(226, 232, 240, 0.9) !important;
+  }
+
+  html.light .bg-slate-600\/50,
+  html.light .bg-slate-600\/40,
+  .light .bg-slate-600\/50,
+  .light .bg-slate-600\/40 {
+    background-color: rgba(203, 213, 225, 0.95) !important;
+  }
+
+  html.light .bg-slate-800\/30,
+  .light .bg-slate-800\/30 {
+    background-color: rgba(241, 245, 249, 0.9) !important;
+  }
+
+  html.light .divide-slate-700\/30,
+  html.light .divide-slate-700\/50,
+  .light .divide-slate-700\/30,
+  .light .divide-slate-700\/50 {
+    border-color: rgba(226, 232, 240, 0.8) !important;
+  }
+
+  /* Light mode hover states */
+  html.light .hover\:bg-slate-700\/20:hover,
+  .light .hover\:bg-slate-700\/20:hover {
+    background-color: rgba(226, 232, 240, 0.7) !important;
+  }
+
+  html.light .hover\:bg-slate-700\/50:hover,
+  .light .hover\:bg-slate-700\/50:hover {
+    background-color: rgba(203, 213, 225, 0.9) !important;
+  }
+
+  html.light .hover\:bg-slate-600\/50:hover,
+  .light .hover\:bg-slate-600\/50:hover {
+    background-color: rgba(148, 163, 184, 0.95) !important;
+  }
+
+  html.light .hover\:border-slate-500\/70:hover,
+  .light .hover\:border-slate-500\/70:hover {
+    border-color: rgba(100, 116, 139, 0.7) !important;
+  }
+
+  html.light .hover\:text-slate-300:hover,
+  .light .hover\:text-slate-300:hover {
+    color: #1e293b !important;
+  }
+
+  html.light .hover\:text-slate-200:hover,
+  .light .hover\:text-slate-200:hover {
+    color: #0f172a !important;
+  }
+
+  /* Modal overlay in light mode */
+  .light .bg-black\/70 {
+    background-color: rgba(15, 23, 42, 0.6);
+  }
+
+  /* Chart backgrounds in light mode */
+  .light .bg-gradient-to-br.from-slate-900\/50 {
+    background-image: linear-gradient(to bottom right, rgba(248, 250, 252, 0.8), rgba(241, 245, 249, 0.8));
+  }
+
+  /* Ensure proper contrast for headers and important text */
+  html.light h1, html.light h2, html.light h3, html.light h4, html.light h5, html.light h6,
+  .light h1, .light h2, .light h3, .light h4, .light h5, .light h6 {
+    color: #020617 !important;
+  }
+
+  /* Button text in light mode */
+  html.light button,
+  .light button {
+    color: #0f172a !important;
+  }
+
+  /* Stronger text for labels and semibold elements */
+  html.light .font-semibold,
+  html.light .font-bold,
+  .light .font-semibold,
+  .light .font-bold {
+    color: #0f172a !important;
+  }
+
+  /* Fix opacity-based text colors */
+  html.light .opacity-98,
+  .light .opacity-98 {
+    opacity: 1 !important;
+  }
+
+  /* Light mode select and option elements */
+  html.light select,
+  html.light option,
+  .light select,
+  .light option {
+    background-color: white !important;
+    color: #0f172a !important;
+  }
+
+  /* Table styling in light mode */
+  html.light table,
+  .light table {
+    color: #0f172a !important;
+  }
+
+  html.light thead,
+  .light thead {
+    background-color: rgba(241, 245, 249, 0.95) !important;
+  }
+
+  html.light tbody tr,
+  .light tbody tr {
+    color: #1e293b !important;
+  }
+
+  /* Red/warning text should remain visible */
+  html.light .text-red-400,
+  .light .text-red-400 {
+    color: #dc2626 !important;
+  }
+
+  html.light .hover\:text-red-300:hover,
+  .light .hover\:text-red-300:hover {
+    color: #b91c1c !important;
   }
 }

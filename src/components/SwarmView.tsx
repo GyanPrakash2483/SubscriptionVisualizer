@@ -98,10 +98,10 @@ export default function SwarmView({ data }: SwarmViewProps) {
 
   if (data.length === 0) {
     return (
-      <div className="flex h-[600px] items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50">
+      <div className="flex h-[600px] items-center justify-center rounded-xl border-2 border-dashed border-slate-600/30 glass">
         <div className="text-center">
-          <p className="text-lg font-medium text-slate-600">No data available</p>
-          <p className="mt-1 text-sm text-slate-500">Add subscriptions to view the swarm plot</p>
+          <p className="text-lg font-medium text-slate-300">Nothing here</p>
+          <p className="mt-1 text-sm text-slate-400">Add some subscriptions first</p>
         </div>
       </div>
     );

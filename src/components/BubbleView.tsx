@@ -195,10 +195,10 @@ export default function BubbleView({ data }: BubbleViewProps) {
 
   if (data.length === 0) {
     return (
-      <div className="flex h-[600px] items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50">
+      <div className="flex h-[600px] items-center justify-center rounded-xl border-2 border-dashed border-slate-600/30 glass">
         <div className="text-center">
-          <p className="text-lg font-medium text-slate-600">No data available</p>
-          <p className="mt-1 text-sm text-slate-500">Add subscriptions to view the bubble chart</p>
+          <p className="text-lg font-medium text-slate-300">Nothing here</p>
+          <p className="mt-1 text-sm text-slate-400">Add some subscriptions first</p>
         </div>
       </div>
     );
@@ -208,8 +208,8 @@ export default function BubbleView({ data }: BubbleViewProps) {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-bold text-slate-100">Hierarchical Circle Packing</h3>
-          <p className="text-sm text-slate-400">Categories in outer bubbles • Services in inner bubbles • Sized by annual cost</p>
+          <h3 className="text-lg font-bold text-slate-100">Bubble Chart</h3>
+          <p className="text-sm text-slate-400">Outer circles = categories • Inner = services • Size = annual cost</p>
         </div>
         <div className="flex items-center gap-2 text-xs">
           <span className="text-slate-500">Size = Annual Cost</span>
