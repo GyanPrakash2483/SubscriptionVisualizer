@@ -398,17 +398,17 @@ export default function Home() {
   return (
     <div className="relative min-h-screen text-slate-100">
       {/* Header */}
-      <header className="glass-strong relative z-20 border-b border-slate-700/50 shadow-xl">
-        <div className="mx-auto max-w-7xl px-4 py-4 md:px-6 md:py-5">
+      <header className="glass-strong relative z-20 border-b border-slate-700/50">
+        <div className="mx-auto max-w-7xl px-4 py-4 md:px-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 shadow-lg">
-                <svg className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600">
+                <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
               <div>
-                <h1 className="bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-xl font-bold text-transparent md:text-2xl">
+                <h1 className="text-xl font-bold text-slate-100 md:text-2xl">
                   Subscription Visualizer
                 </h1>
                 <p className="text-xs text-slate-400">
@@ -420,7 +420,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={cycleTheme}
-                className="flex items-center gap-2 rounded-xl border border-slate-600/50 bg-slate-700/40 px-3 py-2 text-sm font-semibold text-slate-200 shadow-lg backdrop-blur-sm transition hover:border-slate-500/70 hover:bg-slate-600/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-500/30"
+                className="btn-secondary flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-200"
                 aria-label="Toggle theme"
                 title={`Theme: ${theme}`}
               >
@@ -435,7 +435,7 @@ export default function Home() {
                 href="https://github.com/GyanPrakash2483/SubscriptionVisualizer"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 rounded-xl border border-slate-600/50 bg-slate-700/40 px-4 py-2 text-sm font-semibold text-slate-200 shadow-lg backdrop-blur-sm transition hover:border-slate-500/70 hover:bg-slate-600/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-500/30"
+                className="btn-secondary flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-slate-200"
                 aria-label="View source on GitHub"
               >
                 <Github size={18} />
@@ -446,18 +446,15 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="relative px-4 py-8 md:px-6 md:py-10">
+      <main className="relative px-4 py-8 md:px-6">
         <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-6">
-          <div className="glass-strong rounded-2xl p-6 shadow-xl">
+          <div className="glass-strong rounded-xl p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <div className="mb-2 flex items-center gap-3">
-                  <div className="h-8 w-1 rounded-full bg-gradient-to-b from-blue-500 via-purple-500 to-pink-500"></div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                    {reportAuthor ? `Shared Report • ${entries.length} subscription${entries.length !== 1 ? 's' : ''}` : `Step ${step} of 2 • ${entries.length} subscription${entries.length !== 1 ? 's' : ''}`}
-                  </p>
-                </div>
-                <h2 className="text-xl font-bold text-slate-100 md:text-2xl">
+                <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                  {reportAuthor ? `Shared Report • ${entries.length} subscription${entries.length !== 1 ? 's' : ''}` : `Step ${step} of 2 • ${entries.length} subscription${entries.length !== 1 ? 's' : ''}`}
+                </p>
+                <h2 className="mt-1 text-xl font-bold text-slate-100 md:text-2xl">
                   {reportAuthor ? `${reportAuthor}'s Subscriptions` : step === 1 ? "Your Subscriptions" : "Overview"}
                 </h2>
               </div>
@@ -468,7 +465,7 @@ export default function Home() {
                     if (step === 1 && entries.length === 0) return;
                     setStep((prev) => (prev === 1 ? 2 : 1));
                   }}
-                  className="btn-primary glow-hover rounded-xl px-6 py-3 text-sm font-bold text-white transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="btn-primary rounded-lg px-6 py-2.5 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
                   disabled={step === 1 && entries.length === 0}
                 >
                   {step === 1 ? "View Analytics →" : "← Back to Input"}
@@ -476,7 +473,7 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={() => setShareOpen(true)}
-                  className="rounded-xl border border-slate-600/50 bg-slate-700/40 px-6 py-3 text-sm font-bold text-slate-100 shadow-lg backdrop-blur-sm transition hover:border-slate-500/70 hover:bg-slate-600/50 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-500/30 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="btn-secondary rounded-lg px-6 py-2.5 text-sm font-semibold text-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
                   disabled={entries.length === 0}
                 >
                   Share / Export
@@ -486,17 +483,17 @@ export default function Home() {
           </div>
 
         {step === 1 && (
-          <section className="glass-strong grid gap-4 rounded-2xl p-6 shadow-xl">
+          <section className="glass-strong grid gap-4 rounded-xl p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <h2 className="text-xl font-semibold text-slate-100">Your Subscriptions</h2>
+                <h2 className="text-lg font-semibold text-slate-100">Your Subscriptions</h2>
                 <p className="text-sm text-slate-400">Add what you pay for monthly or yearly.</p>
               </div>
               <div className="flex flex-wrap gap-2">
                 <button
                   type="button"
                   onClick={() => setEntries(sampleData)}
-                  className="glass rounded-xl px-4 py-2 text-sm font-semibold text-slate-200 shadow-lg transition hover:bg-slate-700/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-500/20"
+                  className="btn-secondary rounded-lg px-4 py-2 text-sm font-medium text-slate-200"
                 >
                   Try with examples
                 </button>
@@ -504,7 +501,7 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() => setEntries([])}
-                    className="glass rounded-xl px-4 py-2 text-sm font-semibold text-red-400 shadow-lg transition hover:bg-red-900/30 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-red-500/20"
+                    className="btn-secondary rounded-lg px-4 py-2 text-sm font-medium text-red-400"
                   >
                     Clear all
                   </button>
@@ -525,7 +522,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={handleAdd}
-                className="btn-primary glow-hover rounded-xl px-8 py-3 text-sm font-bold text-white transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40"
+                className="btn-primary rounded-lg px-8 py-2.5 text-sm font-semibold text-white"
               >
                 Add Subscription
               </button>
@@ -569,7 +566,7 @@ export default function Home() {
             )}
 
             {entries.length === 0 && (
-              <div className="glass rounded-xl border-2 border-dashed border-slate-600/30 p-8 text-center">
+              <div className="glass rounded-lg border-2 border-dashed border-slate-600/30 p-8 text-center">
                 <p className="text-sm font-medium text-slate-300">Nothing here yet</p>
                 <p className="mt-1 text-xs text-slate-500">Add your subscriptions or try the examples</p>
               </div>
@@ -579,27 +576,27 @@ export default function Home() {
 
         {step === 2 && (
           <>
-            {loadingReport ? (
-              <div className="glass-strong rounded-2xl border-2 border-dashed border-slate-600/30 p-12 text-center">
-                <div className="glow inline-block h-8 w-8 animate-spin rounded-full border-4 border-slate-600 border-t-blue-500"></div>
+              {loadingReport ? (
+              <div className="glass-strong rounded-xl border-2 border-dashed border-slate-600/30 p-12 text-center">
+                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-slate-600 border-t-blue-500"></div>
                 <p className="mt-4 text-lg font-medium text-slate-200">Loading...</p>
                 <p className="mt-2 text-sm text-slate-400">Fetching your data</p>
               </div>
             ) : entries.length === 0 ? (
-              <div className="glass-strong rounded-2xl border-2 border-dashed border-slate-600/30 p-12 text-center">
+              <div className="glass-strong rounded-xl border-2 border-dashed border-slate-600/30 p-12 text-center">
                 <p className="text-lg font-medium text-slate-200">Nothing to show yet</p>
                 <p className="mt-2 text-sm text-slate-400">Add some subscriptions first</p>
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="btn-primary glow-hover mt-4 rounded-xl px-6 py-2.5 text-sm font-semibold text-white"
+                  className="btn-primary mt-4 rounded-lg px-6 py-2.5 text-sm font-semibold text-white"
                 >
                   Add Subscriptions
                 </button>
               </div>
             ) : (
               <>
-                <section className="glass-strong grid gap-4 rounded-2xl p-6 shadow-xl md:grid-cols-2 lg:grid-cols-4">
+                <section className="glass-strong grid gap-4 rounded-xl p-6 md:grid-cols-2 lg:grid-cols-4">
                   <SummaryCard title="Monthly Spend" value={currency.format(summary.totalMonthly)} hint="Total monthly cost (annual plans prorated)" color="sky" />
                   <SummaryCard title="Annual Spend" value={currency.format(summary.totalAnnual)} hint="Total annualized cost" color="violet" />
                   <SummaryCard title="Active / Cancelled" value={`${summary.active} / ${summary.cancelled}`} hint="Current subscription status" color="emerald" />
@@ -616,7 +613,7 @@ export default function Home() {
                   recordCount={filtered.length}
                 />
 
-                <section className="glass-strong rounded-2xl p-6 shadow-xl">
+                <section className="glass-strong rounded-xl p-6">
                   <div className="flex flex-wrap items-center justify-between gap-3 pb-5">
                     <div className="flex flex-wrap items-center gap-2">
                       {(["treemap", "swarm", "bubble"] as ViewMode[]).map((mode) => (
@@ -624,10 +621,10 @@ export default function Home() {
                           key={mode}
                           type="button"
                           onClick={() => setView(mode)}
-                          className={`rounded-xl px-5 py-2.5 text-sm font-bold transition ${
+                          className={`rounded-lg px-5 py-2 text-sm font-medium transition ${
                             view === mode 
-                              ? "btn-primary glow text-white shadow-xl" 
-                              : "border border-slate-600/50 bg-slate-700/30 text-slate-300 hover:border-slate-500/70 hover:bg-slate-600/40"
+                              ? "btn-primary text-white" 
+                              : "btn-secondary text-slate-300"
                           }`}
                         >
                           {mode === "treemap" && "Treemap"}
@@ -638,7 +635,7 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="glass rounded-2xl p-4">
+                  <div className="glass rounded-xl p-4">
                     {view === "treemap" && <TreemapView data={filtered} />}
                     {view === "swarm" && <SwarmView data={filtered} />}
                     {view === "bubble" && <BubbleView data={filtered} />}
@@ -727,25 +724,18 @@ export default function Home() {
 
 type SummaryCardProps = { title: string; value: string; hint: string; color: "sky" | "violet" | "emerald" | "amber" };
 function SummaryCard({ title, value, hint, color }: SummaryCardProps) {
-  const colorClasses = {
-    sky: "from-blue-500/20 to-cyan-500/20 border-blue-400/20",
-    violet: "from-violet-500/20 to-purple-500/20 border-violet-400/20",
-    emerald: "from-emerald-500/20 to-green-500/20 border-emerald-400/20",
-    amber: "from-amber-500/20 to-orange-500/20 border-amber-400/20",
-  };
-
   const textColors = {
-    sky: "text-blue-400",
-    violet: "text-violet-400",
-    emerald: "text-emerald-400",
-    amber: "text-amber-400",
+    sky: "text-blue-500",
+    violet: "text-violet-500",
+    emerald: "text-emerald-500",
+    amber: "text-amber-500",
   };
 
   return (
-    <div className={`glass rounded-xl border bg-gradient-to-br p-4 shadow-lg ${colorClasses[color]}`}>
-      <p className={`text-xs font-semibold uppercase tracking-wide ${textColors[color]}`}>{title}</p>
-      <p className="mt-2 text-2xl font-bold text-slate-100">{value}</p>
-      <p className="mt-1 text-xs text-slate-400">{hint}</p>
+    <div className="glass rounded-xl border border-slate-700/30 p-4">
+      <p className="text-xs font-medium uppercase tracking-wide text-slate-400">{title}</p>
+      <p className={`mt-2 text-2xl font-bold ${textColors[color]}`}>{value}</p>
+      <p className="mt-1 text-xs text-slate-500">{hint}</p>
     </div>
   );
 }
@@ -764,7 +754,7 @@ type FiltersBarProps = {
 
 function FiltersBar({ categoryFilter, cycleFilter, statusFilter, onCategoryChange, onCycleChange, onStatusChange, recordCount }: FiltersBarProps) {
   return (
-    <div className="glass-strong flex flex-wrap items-center gap-3 rounded-2xl p-4 shadow-xl">
+    <div className="glass-strong flex flex-wrap items-center gap-3 rounded-xl p-4">
       <Selector label="Category" value={categoryFilter} onChange={onCategoryChange} options={["All categories", ...categories]} />
       <Selector label="Billing" value={cycleFilter} onChange={onCycleChange} options={["All billing", ...billingCycles]} />
       <Selector label="Status" value={statusFilter} onChange={onStatusChange} options={["All statuses", ...statuses]} />
@@ -779,11 +769,11 @@ type SelectorProps = { label: string; value: string; options: string[]; onChange
 function Selector({ label, value, options, onChange }: SelectorProps) {
   return (
     <label className="flex items-center gap-2 text-sm font-medium text-slate-200">
-      <span className="text-xs font-bold uppercase tracking-wide text-slate-300">{label}</span>
+      <span className="text-xs font-medium uppercase tracking-wide text-slate-400">{label}</span>
       <select 
         value={value} 
         onChange={(e) => onChange(e.target.value)} 
-        className="input-enhanced rounded-xl px-4 py-2.5 text-sm font-medium text-slate-100 shadow-sm"
+        className="input-enhanced rounded-lg px-4 py-2 text-sm font-medium text-slate-100"
       >
         {options.map((opt) => (
           <option key={opt} value={opt}>
@@ -799,14 +789,14 @@ type TextFieldProps = { label: string; value: string; onChange: (v: string) => v
 function TextField({ label, value, onChange, type = "text", step, placeholder }: TextFieldProps) {
   return (
     <label className="flex flex-col gap-1.5 text-sm font-medium text-slate-200">
-      <span className="text-xs font-bold uppercase tracking-wide text-slate-300">{label}</span>
+      <span className="text-xs font-medium uppercase tracking-wide text-slate-400">{label}</span>
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
         type={type}
         step={step}
         placeholder={placeholder}
-        className="input-enhanced rounded-xl px-4 py-2.5 text-sm font-medium text-slate-100 placeholder:text-slate-500"
+        className="input-enhanced rounded-lg px-4 py-2.5 text-sm font-medium text-slate-100 placeholder:text-slate-500"
       />
     </label>
   );
@@ -816,11 +806,11 @@ type SelectFieldProps = { label: string; value: string; options: string[]; onCha
 function SelectField({ label, value, options, onChange }: SelectFieldProps) {
   return (
     <label className="flex flex-col gap-1.5 text-sm font-medium text-slate-200">
-      <span className="text-xs font-bold uppercase tracking-wide text-slate-300">{label}</span>
+      <span className="text-xs font-medium uppercase tracking-wide text-slate-400">{label}</span>
       <select 
         value={value} 
         onChange={(e) => onChange(e.target.value)} 
-        className="input-enhanced rounded-xl px-4 py-2.5 text-sm font-medium text-slate-100 shadow-sm"
+        className="input-enhanced rounded-lg px-4 py-2.5 text-sm font-medium text-slate-100"
       >
         {options.map((opt) => (
           <option key={opt} value={opt}>
@@ -874,7 +864,7 @@ function ShareExportModal({ onClose, view, categoryFilter, cycleFilter, statusFi
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-md" role="dialog" aria-modal="true" onClick={onClose}>
-      <div className="glass-strong w-full max-w-2xl rounded-3xl border border-slate-600/30 p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+      <div className="glass-strong w-full max-w-2xl rounded-xl border border-slate-600/30 p-6" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-start justify-between gap-4">
           <div>
             <h3 className="text-xl font-bold text-slate-100">Share & Export</h3>
@@ -885,7 +875,7 @@ function ShareExportModal({ onClose, view, categoryFilter, cycleFilter, statusFi
           <button 
             type="button" 
             onClick={onClose} 
-            className="glass rounded-xl px-4 py-2 text-sm font-semibold text-slate-200 shadow-sm transition hover:bg-slate-700/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/20"
+            className="btn-secondary rounded-lg px-4 py-2 text-sm font-medium text-slate-200"
           >
             Close
           </button>
@@ -894,7 +884,7 @@ function ShareExportModal({ onClose, view, categoryFilter, cycleFilter, statusFi
         <div className="mt-6 space-y-5">
           {/* Save Report Section */}
           {!savedReportId && (
-            <div className="glass rounded-2xl border border-blue-500/20 bg-blue-500/10 p-5">
+            <div className="glass rounded-xl border border-blue-500/20 bg-blue-500/10 p-5">
               <p className="text-xs font-bold uppercase tracking-wide text-blue-400">Save Report</p>
               <p className="mt-2 text-sm text-slate-300">
                 Save your subscriptions and filters to generate a permanent shareable link. Anyone with the link can view your report.
@@ -916,7 +906,7 @@ function ShareExportModal({ onClose, view, categoryFilter, cycleFilter, statusFi
                 type="button"
                 onClick={handleSaveAndShare}
                 disabled={savingReport || !authorName.trim()}
-                className="btn-primary glow-hover mt-4 rounded-xl px-6 py-3 text-sm font-bold text-white transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-50"
+                className="btn-primary mt-4 rounded-lg px-6 py-2.5 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {savingReport ? "Saving..." : "Save Report & Generate Link"}
               </button>
@@ -924,7 +914,7 @@ function ShareExportModal({ onClose, view, categoryFilter, cycleFilter, statusFi
           )}
 
           {/* Share Link Section */}
-          <div className="glass rounded-2xl p-5">
+          <div className="glass rounded-xl p-5">
             <p className="text-xs font-bold uppercase tracking-wide text-slate-400">
               {savedReportId ? "Shareable Link" : "Sharing"}
             </p>
@@ -950,7 +940,7 @@ function ShareExportModal({ onClose, view, categoryFilter, cycleFilter, statusFi
                   <button
                     type="button"
                     onClick={onShareNative}
-                    className="glass rounded-xl px-4 py-2 text-sm font-semibold text-slate-200 shadow-sm transition hover:bg-slate-700/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/20"
+                    className="btn-secondary rounded-lg px-4 py-2 text-sm font-medium text-slate-200"
                   >
                     Native Share
                   </button>
@@ -961,7 +951,7 @@ function ShareExportModal({ onClose, view, categoryFilter, cycleFilter, statusFi
 
           {/* Social Media Share (only when report is saved) */}
           {savedReportId && (
-            <div className="glass rounded-2xl p-5">
+            <div className="glass rounded-xl p-5">
               <p className="text-xs font-bold uppercase tracking-wide text-slate-400">Social Media</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <SocialButton label="LinkedIn" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(displayUrl)}`} />
@@ -973,20 +963,20 @@ function ShareExportModal({ onClose, view, categoryFilter, cycleFilter, statusFi
           )}
 
           {/* Export Data */}
-          <div className="glass rounded-2xl p-5">
+          <div className="glass rounded-xl p-5">
             <p className="text-xs font-bold uppercase tracking-wide text-slate-400">Export Data</p>
             <div className="mt-4 flex flex-wrap gap-2">
               <button 
                 type="button" 
                 onClick={onExportCSV} 
-                className="glow-hover rounded-xl border border-cyan-500/30 bg-gradient-to-r from-blue-600 to-cyan-600 px-6 py-3 text-sm font-bold text-white shadow-xl transition hover:from-blue-500 hover:to-cyan-500 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/40"
+                className="btn-primary rounded-lg px-6 py-2.5 text-sm font-semibold text-white"
               >
                 Download CSV
               </button>
               <button 
                 type="button" 
                 onClick={onExportJSON} 
-                className="glow-hover rounded-xl border border-pink-500/30 bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-sm font-bold text-white shadow-xl transition hover:from-purple-500 hover:to-pink-500 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-purple-500/40"
+                className="btn-primary rounded-lg px-6 py-2.5 text-sm font-semibold text-white"
               >
                 Download JSON
               </button>
@@ -1008,7 +998,7 @@ function CopyButton({ value }: { value: string }) {
   return (
     <button
       type="button"
-      className="glass rounded-xl px-4 py-2 text-sm font-semibold text-slate-200 shadow-sm transition hover:bg-slate-700/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/20"
+      className="btn-secondary rounded-lg px-4 py-2 text-sm font-medium text-slate-200"
       onClick={async () => {
         try {
           await navigator.clipboard.writeText(value);
@@ -1027,7 +1017,7 @@ function CopyButton({ value }: { value: string }) {
 function SocialButton({ label, href }: { label: string; href: string }) {
   return (
     <a
-      className="glass rounded-xl px-4 py-2 text-sm font-semibold text-slate-200 shadow-sm transition hover:bg-slate-700/50"
+      className="btn-secondary rounded-lg px-4 py-2 text-sm font-medium text-slate-200"
       href={href}
       target="_blank"
       rel="noreferrer"

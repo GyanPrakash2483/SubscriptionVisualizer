@@ -76,64 +76,77 @@
 
   /* Glass morphism utility - Dark */
   .glass {
-    background: rgba(30, 41, 59, 0.5);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(148, 163, 184, 0.15);
-    transition: background 0.3s ease, border 0.3s ease;
+    background: rgba(30, 41, 59, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    transition: background 0.2s ease, border 0.2s ease;
   }
 
   .glass-strong {
-    background: rgba(30, 41, 59, 0.7);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    transition: background 0.3s ease, border 0.3s ease;
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    transition: background 0.2s ease, border 0.2s ease;
   }
 
   /* Glass morphism utility - Light */
   html.light .glass,
   .light .glass {
-    background: rgba(255, 255, 255, 0.6) !important;
-    border: 1px solid rgba(203, 213, 225, 0.4) !important;
+    background: rgba(255, 255, 255, 0.7) !important;
+    border: 1px solid rgba(203, 213, 225, 0.3) !important;
   }
 
   html.light .glass-strong,
   .light .glass-strong {
-    background: rgba(255, 255, 255, 0.8) !important;
-    border: 1px solid rgba(203, 213, 225, 0.5) !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(203, 213, 225, 0.4) !important;
   }
 
-  /* Glow effects */
-  .glow {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4),
-                0 0 40px rgba(59, 130, 246, 0.15);
-  }
-
-  .glow-hover {
-    transition: box-shadow 0.3s ease, transform 0.2s ease;
-  }
-
-  .glow-hover:hover {
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.5),
-                0 0 60px rgba(59, 130, 246, 0.25);
-    transform: translateY(-1px);
-  }
-
-  /* Button enhancements */
+  /* Button styles */
   .btn-primary {
-    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
+    background: #3b82f6;
+    border: none;
+    transition: all 0.2s ease;
   }
 
   .btn-primary:hover {
-    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
+    background: #2563eb;
+  }
+
+  .btn-secondary {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    transition: all 0.2s ease;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(30, 41, 59, 0.8);
+    border-color: rgba(148, 163, 184, 0.5);
+  }
+
+  /* Light mode buttons */
+  html.light .btn-primary,
+  .light .btn-primary {
+    background: #3b82f6 !important;
+  }
+
+  html.light .btn-primary:hover,
+  .light .btn-primary:hover {
+    background: #2563eb !important;
+  }
+
+  html.light .btn-secondary,
+  .light .btn-secondary {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(203, 213, 225, 0.5) !important;
+  }
+
+  html.light .btn-secondary:hover,
+  .light .btn-secondary:hover {
+    background: rgba(241, 245, 249, 0.95) !important;
+    border-color: rgba(148, 163, 184, 0.7) !important;
   }
 
   /* Input enhancements - Dark */
